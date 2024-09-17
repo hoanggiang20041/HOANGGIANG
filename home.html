@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Đăng Nhập</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-top: 10px;
+            color: #d9534f;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Đăng Nhập</h1>
+        <input type="text" id="username" placeholder="Tên người dùng" />
+        <input type="password" id="password" placeholder="Mật khẩu" />
+        <button id="login">Đăng Nhập</button>
+        <div id="message" class="message hidden">Tên người dùng hoặc mật khẩu không đúng hoặc quyền camera bị từ chối.</div>
+    </div>
+
+    <script>
+        document.getElementById('login').addEventListener('click', function() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            // Thay đổi tên người dùng và mật khẩu theo yêu cầu
+            var validUsername = 'admin';
+            var validPassword = '123456';
+
+            // Kiểm tra quyền truy cập camera
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    if (username === validUsername && password === validPassword) {
+                        // Nếu đăng nhập thành công và có quyền camera, chuyển hướng đến trang home.html
+                        window.location.href = 'home.html';
+                    } else {
+                        // Nếu đăng nhập không thành công, hiển thị thông báo lỗi
+                        document.getElementById('message').classList.remove('hidden');
+                    }
+                })
+                .catch(function(err) {
+                    // Nếu không cấp quyền camera, hiển thị thông báo lỗi
+                    document.getElementById('message').classList.remove('hidden');
+                });
+        });
+    </script>
+</body>
+</html>
