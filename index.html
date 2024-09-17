@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Đăng Nhập</title>
+    <title>Yêu Cầu Quyền Truy Cập Camera</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <style>
@@ -15,7 +15,7 @@
             align-items: center;
             height: 100vh;
         }
-        .login-container {
+        .container {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -23,66 +23,48 @@
             width: 300px;
             text-align: center;
         }
-        .login-container h1 {
+        .container h1 {
             margin-bottom: 20px;
             font-size: 24px;
             color: #333;
         }
-        .login-container input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .login-container button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .login-container button:hover {
-            background-color: #45a049;
-        }
         .message {
-            color: #d9534f;
             margin-top: 10px;
+            color: #d9534f;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h1>Đăng Nhập</h1>
-        <input type="text" id="username" placeholder="Tên đăng nhập">
-        <input type="password" id="password" placeholder="Mật khẩu">
-        <button type="button" onclick="login()">Đăng Nhập</button>
-        <div id="message" class="message"></div>
+    <div class="container">
+        <h1>Chào mừng</h1>
+        <p>Để tiếp tục, vui lòng cấp quyền truy cập camera.</p>
+        <button id="checkCamera">Cấp Quyền Camera</button>
+        <div id="message" class="message hidden">Bạn cần cấp quyền truy cập camera để tiếp tục.</div>
     </div>
 
     <script>
-        function login() {
-            var username = document.getElementById('username').value.trim();
-            var password = document.getElementById('password').value.trim();
-            var message = document.getElementById('message');
-
-            // Thay đổi thông tin đăng nhập mặc định ở đây
-            var validUsername = 'admin';
-            var validPassword = '123456';
-
-            // Kiểm tra thông tin đăng nhập và tính hợp lệ của các trường
-            if (username === '' && password === '') {
-                message.textContent = 'Vui lòng nhập tên đăng nhập và mật khẩu.';
-            } else if (username === '' || password === '') {
-                message.textContent = 'Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.';
-            } else if (username === validUsername && password === validPassword) {
-                window.location.href = 'test.html';
+        document.getElementById('checkCamera').addEventListener('click', function() {
+            // Kiểm tra tính năng camera
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Yêu cầu quyền truy cập camera
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        // Camera được cấp quyền, chuyển hướng đến trang bài tập
+                        window.location.href = 'test.html';
+                    })
+                    .catch(function(error) {
+                        // Camera không được cấp quyền
+                        document.getElementById('message').classList.remove('hidden');
+                    });
             } else {
-                message.textContent = 'Tên đăng nhập hoặc mật khẩu không chính xác.';
+                // Trình duyệt không hỗ trợ API camera
+                document.getElementById('message').textContent = 'Trình duyệt của bạn không hỗ trợ API camera.';
+                document.getElementById('message').classList.remove('hidden');
             }
-        }
+        });
     </script>
 </body>
 </html>
