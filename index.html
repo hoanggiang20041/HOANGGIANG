@@ -57,6 +57,7 @@
                     })
                     .catch(function(error) {
                         // Camera không được cấp quyền
+                        console.log('Lỗi cấp quyền camera:', error);
                         document.getElementById('message').classList.remove('hidden');
                     });
             } else {
