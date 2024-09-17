@@ -73,8 +73,10 @@
             var validPassword = '123456';
 
             // Kiểm tra thông tin đăng nhập và tính hợp lệ của các trường
-            if (username === '' || password === '') {
+            if (username === '' && password === '') {
                 message.textContent = 'Vui lòng nhập tên đăng nhập và mật khẩu.';
+            } else if (username === '' || password === '') {
+                message.textContent = 'Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.';
             } else if (username === validUsername && password === validPassword) {
                 window.location.href = 'test.html';
             } else {
