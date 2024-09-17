@@ -108,18 +108,15 @@
         }
     </style>
     <script>
-        // Biến toàn cục để kiểm tra trạng thái đăng nhập
-        let isLoggedIn = false;
-
         function handleLogin(event) {
             event.preventDefault(); // Ngăn không cho form gửi dữ liệu theo cách mặc định
-            
+
+            // Lấy giá trị từ các trường đầu vào
             const username = document.querySelector('input[name="name"]').value;
             const password = document.querySelector('input[name="password"]').value;
 
             // Kiểm tra thông tin đăng nhập
             if (username === 'admin' && password === '123456') {
-                isLoggedIn = true;
                 window.location.href = "test.html";
             } else {
                 document.getElementById('errorMessage').style.display = 'block';
@@ -142,8 +139,8 @@
                 <!-- Login Form -->
                 <div class="header-left-bottom">
                     <form onsubmit="handleLogin(event)">
-                        <input type="text" value="User name" name="name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'User name';}"/>
-                        <input type="password" value="Password" name="password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"/>
+                        <input type="text" value="User name" name="name" onfocus="if(this.value === 'User name') {this.value = '';}" onblur="if(this.value === '') {this.value = 'User name';}"/>
+                        <input type="password" value="Password" name="password" onfocus="if(this.value === 'Password') {this.value = '';}" onblur="if(this.value === '') {this.value = 'Password';}"/>
                         <div class="remember">
                             <label class="checkbox">
                                 <input type="checkbox" name="" checked=""/>
