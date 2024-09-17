@@ -64,15 +64,18 @@
 
     <script>
         function login() {
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
+            var username = document.getElementById('username').value.trim();
+            var password = document.getElementById('password').value.trim();
             var message = document.getElementById('message');
 
             // Thay đổi thông tin đăng nhập mặc định ở đây
             var validUsername = 'admin';
             var validPassword = '123456';
 
-            if (username === validUsername && password === validPassword) {
+            // Kiểm tra thông tin đăng nhập và tính hợp lệ của các trường
+            if (username === '' || password === '') {
+                message.textContent = 'Vui lòng nhập tên đăng nhập và mật khẩu.';
+            } else if (username === validUsername && password === validPassword) {
                 window.location.href = 'test.html';
             } else {
                 message.textContent = 'Tên đăng nhập hoặc mật khẩu không chính xác.';
