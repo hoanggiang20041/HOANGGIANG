@@ -101,15 +101,26 @@
             padding: 10px;
             margin-top: auto;
         }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
     </style>
     <script>
         function handleLogin(event) {
             event.preventDefault(); // Ngăn không cho form gửi dữ liệu theo cách mặc định
+            
+            const username = document.querySelector('input[name="name"]').value;
+            const password = document.querySelector('input[name="password"]').value;
 
-            // Bạn có thể kiểm tra thông tin đăng nhập ở đây nếu cần
-
-            // Chuyển hướng đến trang test.html
-            window.location.href = "test.html";
+            // Kiểm tra thông tin đăng nhập
+            if (username === 'admin' && password === '123456') {
+                // Chuyển hướng đến trang test.html nếu đăng nhập thành công
+                window.location.href = "test.html";
+            } else {
+                // Hiển thị thông báo lỗi nếu đăng nhập không thành công
+                document.getElementById('errorMessage').style.display = 'block';
+            }
         }
 
         function handleSignUp() {
@@ -132,18 +143,18 @@
                         <input type="password" value="Password" name="password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"/>
                         <div class="remember">
                             <label class="checkbox">
-                                <input type="checkbox" name="" checked="">
+                                <input type="checkbox" name="" checked=""/>
                                 <i></i> Remember me
                             </label>
                             <div class="forgot">
                                 <h6><a href="#">Forgot Password?</a></h6>
                             </div>
                         </div>
-                        <input type="submit" value="Login">
+                        <input type="submit" value="Login"/>
+                        <div id="errorMessage" class="error-message" style="display: none;">Sai tên đăng nhập hoặc mật khẩu.</div>
                     </form>
                 </div>
                 <div class="header-left-top">
-                    <!-- Update the form to use a button with an onclick event -->
                     <button onclick="handleSignUp()">Sign Up</button>
                 </div>
             </div>
@@ -152,7 +163,5 @@
     <div class="copyright">
         <p>© 2024 | Design by NGUYEN HOANG GIANG</p>
     </div>
-    <!-- Include Firebase configuration -->
-    <script type="module" src="js/firebase-config.js"></script>
 </body>
 </html>
