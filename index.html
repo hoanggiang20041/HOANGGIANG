@@ -104,9 +104,13 @@
         .error-message {
             color: red;
             margin-top: 10px;
+            display: none;
         }
     </style>
     <script>
+        // Biến toàn cục để kiểm tra trạng thái đăng nhập
+        let isLoggedIn = false;
+
         function handleLogin(event) {
             event.preventDefault(); // Ngăn không cho form gửi dữ liệu theo cách mặc định
             
@@ -115,10 +119,9 @@
 
             // Kiểm tra thông tin đăng nhập
             if (username === 'admin' && password === '123456') {
-                // Chuyển hướng đến trang test.html nếu đăng nhập thành công
+                isLoggedIn = true;
                 window.location.href = "test.html";
             } else {
-                // Hiển thị thông báo lỗi nếu đăng nhập không thành công
                 document.getElementById('errorMessage').style.display = 'block';
             }
         }
@@ -151,7 +154,7 @@
                             </div>
                         </div>
                         <input type="submit" value="Login"/>
-                        <div id="errorMessage" class="error-message" style="display: none;">Sai tên đăng nhập hoặc mật khẩu.</div>
+                        <div id="errorMessage" class="error-message">Sai tên đăng nhập hoặc mật khẩu.</div>
                     </form>
                 </div>
                 <div class="header-left-top">
