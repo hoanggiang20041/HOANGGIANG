@@ -1,167 +1,83 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Trang web thi chứng chỉ online GKNM</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Đăng Nhập</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="keywords" content="Classy Login form Responsive, Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
     <style>
-        /* CSS styles */
         body {
-            font-family: 'Roboto Condensed', sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 2em;
-        }
-        .header-bottom {
-            display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
+            height: 100vh;
         }
-        .header-right {
+        .login-container {
             background-color: #fff;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 100%;
-            max-width: 400px;
+            width: 300px;
+            text-align: center;
         }
-        .header-left-bottom form {
-            display: flex;
-            flex-direction: column;
+        .login-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
         }
-        .header-left-bottom input[type="text"],
-        .header-left-bottom input[type="password"] {
+        .login-container input {
+            width: calc(100% - 20px);
             padding: 10px;
-            margin-bottom: 15px;
+            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        .remember {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .remember label {
-            display: flex;
-            align-items: center;
-        }
-        .remember input[type="checkbox"] {
-            margin-right: 5px;
-        }
-        .forgot h6 {
-            margin: 0;
-        }
-        .header-left-bottom input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
+        .login-container button {
             padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
         }
-        .header-left-bottom input[type="submit"]:hover {
-            background-color: #0056b3;
+        .login-container button:hover {
+            background-color: #45a049;
         }
-        .header-left-top {
-            margin-top: 20px;
-        }
-        .header-left-top button {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .header-left-top button:hover {
-            background-color: #218838;
-        }
-        .copyright {
-            background-color: #007bff;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            margin-top: auto;
-        }
-        .error-message {
-            color: red;
+        .message {
+            color: #d9534f;
             margin-top: 10px;
-            display: none;
         }
     </style>
-    <script>
-        function handleLogin(event) {
-            event.preventDefault(); // Ngăn không cho form gửi dữ liệu theo cách mặc định
-
-            // Lấy giá trị từ các trường đầu vào
-            const username = document.querySelector('input[name="name"]').value;
-            const password = document.querySelector('input[name="password"]').value;
-
-            // Kiểm tra thông tin đăng nhập
-            if (username === 'admin' && password === '123456') {
-                window.location.href = "test.html";
-            } else {
-                document.getElementById('errorMessage').style.display = 'block';
-            }
-        }
-
-        function handleSignUp() {
-            // Chuyển hướng đến trang đăng ký
-            window.location.href = "register.html";
-        }
-    </script>
 </head>
 <body>
-    <div class="header">
-        <div class="header-main">
-            <h1>THI CHỨNG CHỈ ONLINE GKNM</h1>
-        </div>
-        <div class="header-bottom">
-            <div class="header-right">
-                <!-- Login Form -->
-                <div class="header-left-bottom">
-                    <form onsubmit="handleLogin(event)">
-                        <input type="text" value="User name" name="name" onfocus="if(this.value === 'User name') {this.value = '';}" onblur="if(this.value === '') {this.value = 'User name';}"/>
-                        <input type="password" value="Password" name="password" onfocus="if(this.value === 'Password') {this.value = '';}" onblur="if(this.value === '') {this.value = 'Password';}"/>
-                        <div class="remember">
-                            <label class="checkbox">
-                                <input type="checkbox" name="" checked=""/>
-                                <i></i> Remember me
-                            </label>
-                            <div class="forgot">
-                                <h6><a href="#">Forgot Password?</a></h6>
-                            </div>
-                        </div>
-                        <input type="submit" value="Login"/>
-                        <div id="errorMessage" class="error-message">Sai tên đăng nhập hoặc mật khẩu.</div>
-                    </form>
-                </div>
-                <div class="header-left-top">
-                    <button onclick="handleSignUp()">Sign Up</button>
-                </div>
-            </div>
-        </div>
+    <div class="login-container">
+        <h1>Đăng Nhập</h1>
+        <input type="text" id="username" placeholder="Tên đăng nhập">
+        <input type="password" id="password" placeholder="Mật khẩu">
+        <button type="button" onclick="login()">Đăng Nhập</button>
+        <div id="message" class="message"></div>
     </div>
-    <div class="copyright">
-        <p>© 2024 | Design by NGUYEN HOANG GIANG</p>
-    </div>
+
+    <script>
+        function login() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var message = document.getElementById('message');
+
+            // Thay đổi thông tin đăng nhập mặc định ở đây
+            var validUsername = 'admin';
+            var validPassword = '123456';
+
+            if (username === validUsername && password === validPassword) {
+                window.location.href = 'test.html';
+            } else {
+                message.textContent = 'Tên đăng nhập hoặc mật khẩu không chính xác.';
+            }
+        }
+    </script>
 </body>
 </html>
