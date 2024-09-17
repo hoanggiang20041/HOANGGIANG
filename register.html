@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Đăng ký</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Chia trang thành phần chính và footer */
+            min-height: 100vh; /* Đảm bảo chiều cao tối thiểu là 100vh */
+        }
+        .register-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin: auto; /* Center horizontally */
+            margin-top: 20px; /* Create space above */
+        }
+        .register-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .register-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .register-container input[type="text"],
+        .register-container input[type="password"],
+        .register-container input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .register-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .register-container button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            display: none;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+            font-size: 16px;
+        }
+        .footer {
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h1>Đăng ký</h1>
+        <form id="registerForm">
+            <label for="newUsername">Username:</label>
+            <input type="text" id="newUsername" name="newUsername" required>
+
+            <label for="newEmail">Email:</label>
+            <input type="email" id="newEmail" name="newEmail" required>
+
+            <label for="newPassword">Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+
+            <button type="submit">Đăng ký</button>
+        </form>
+        <div id="successMessage" class="message">Bạn đã đăng ký thành công tài khoản GKNM!</div>
+    </div>
+    <div class="footer">
+        <p>Design by GKNM</p>
+    </div>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngăn không cho form gửi dữ liệu theo cách mặc định
+
+            // Bạn có thể thực hiện xử lý đăng ký tại đây
+
+            // Hiển thị thông báo thành công
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Tuỳ chọn: Chuyển hướng đến trang khác sau một thời gian
+            setTimeout(function() {
+                window.location.href = 'index.html'; // Chuyển đến trang đăng nhập hoặc trang khác
+            }, 2000); // Thay đổi thời gian theo nhu cầu (2000ms = 2 giây)
+        });
+    </script>
+</body>
+</html>
