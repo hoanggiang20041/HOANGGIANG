@@ -4,9 +4,10 @@
     <title>Đăng Nhập</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto Condensed', sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
@@ -17,32 +18,34 @@
         }
         .container {
             background-color: #fff;
-            padding: 20px;
+            padding: 40px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 320px;
             text-align: center;
         }
         .container h1 {
-            margin-bottom: 20px;
-            font-size: 24px;
+            margin-bottom: 25px;
+            font-size: 26px;
             color: #333;
         }
         .container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
         .container button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
         .container button:hover {
             background-color: #45a049;
@@ -54,42 +57,70 @@
         .hidden {
             display: none;
         }
+        .toggle-link {
+            margin-top: 15px;
+            cursor: pointer;
+            color: #007bff;
+        }
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Đăng Nhập</h1>
+        <h1 id="form-title">Đăng Nhập</h1>
         <input type="text" id="username" placeholder="Tên người dùng" />
         <input type="password" id="password" placeholder="Mật khẩu" />
-        <button id="login">Đăng Nhập</button>
-        <div id="message" class="message hidden">Tên người dùng hoặc mật khẩu không đúng hoặc quyền camera bị từ chối.</div>
+        <button id="action-button">Đăng Nhập</button>
+        <div id="message" class="message hidden">Tên người dùng hoặc mật khẩu không đúng.</div>
+        <div id="toggle-link" class="toggle-link" onclick="toggleForm()">Chưa có tài khoản? Đăng ký</div>
     </div>
 
     <script>
-        document.getElementById('login').addEventListener('click', function() {
+        document.getElementById('action-button').addEventListener('click', function() {
             var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
+            var formTitle = document.getElementById('form-title').textContent;
 
-            // Thay đổi tên người dùng và mật khẩu theo yêu cầu
-            var validUsername = 'admin';
-            var validPassword = '123456';
+            if (formTitle === 'Đăng Nhập') {
+                // Đăng nhập
+                var storedUsername = localStorage.getItem('username');
+                var storedPassword = localStorage.getItem('password');
 
-            // Kiểm tra quyền truy cập camera
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function(stream) {
-                    if (username === validUsername && password === validPassword) {
-                        // Nếu đăng nhập thành công và có quyền camera, chuyển hướng đến trang chính
-                        window.location.href = 'home.html';
-                    } else {
-                        // Nếu đăng nhập không thành công, hiển thị thông báo lỗi
-                        document.getElementById('message').classList.remove('hidden');
-                    }
-                })
-                .catch(function(err) {
-                    // Nếu không cấp quyền camera, hiển thị thông báo lỗi
+                if (username === storedUsername && password === storedPassword) {
+                    window.location.href = 'home.html';
+                } else {
                     document.getElementById('message').classList.remove('hidden');
-                });
+                }
+            } else {
+                // Đăng ký
+                localStorage.setItem('username', username);
+                localStorage.setItem('password', password);
+                document.getElementById('message').textContent = 'Đăng ký thành công!';
+                document.getElementById('message').classList.remove('hidden');
+                setTimeout(function() {
+                    window.location.href = 'home.html'; // Chuyển đến trang chính sau khi đăng ký
+                }, 1000); // Thời gian chờ 1 giây để người dùng thấy thông báo đăng ký thành công
+            }
         });
+
+        function toggleForm() {
+            var formTitle = document.getElementById('form-title');
+            var actionButton = document.getElementById('action-button');
+            var toggleLink = document.getElementById('toggle-link');
+
+            if (formTitle.textContent === 'Đăng Nhập') {
+                formTitle.textContent = 'Đăng Ký';
+                actionButton.textContent = 'Đăng Ký';
+                toggleLink.textContent = 'Đã có tài khoản? Đăng nhập';
+            } else {
+                formTitle.textContent = 'Đăng Nhập';
+                actionButton.textContent = 'Đăng Nhập';
+                toggleLink.textContent = 'Chưa có tài khoản? Đăng ký';
+                document.getElementById('message').classList.add('hidden');
+            }
+        }
     </script>
 </body>
 </html>
