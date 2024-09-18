@@ -23,6 +23,7 @@
             width: 100%;
             margin: auto;
             flex: 1;
+            text-align: center;
         }
         .quiz-container h1 {
             margin-bottom: 20px;
@@ -31,6 +32,7 @@
         }
         .question {
             margin-bottom: 20px;
+            text-align: left;
         }
         .question p {
             margin-bottom: 8px;
@@ -68,11 +70,19 @@
             color: #333;
             border-top: 1px solid #ddd;
         }
+        .timer {
+            font-size: 30px;
+            margin: 20px 0;
+            color: #d9534f;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="quiz-container">
         <h1>Thi Lịch sử</h1>
+        <p id="username">Tên người dùng: <strong>NguyenHoangGiang</strong></p>
+        <div id="timer" class="timer">00:30</div>
         <form id="quizForm">
             <!-- Question 1 -->
             <div class="question">
@@ -163,55 +173,55 @@
                 <p>Câu hỏi 7: Ai là nhân vật chính trong cuộc kháng chiến chống quân Nguyên Mông lần thứ nhất?</p>
                 <div class="answers">
                     <input type="radio" id="q7a" name="q7" value="A">
-                    <label for="q7a">A. Trần Thái Tông</label><br>
+                    <label for="q7a">A. Trần Hưng Đạo</label><br>
                     <input type="radio" id="q7b" name="q7" value="B">
-                    <label for="q7b">B. Trần Hưng Đạo</label><br>
+                    <label for="q7b">B. Lê Lợi</label><br>
                     <input type="radio" id="q7c" name="q7" value="C">
-                    <label for="q7c">C. Lý Thường Kiệt</label><br>
+                    <label for="q7c">C. Nguyễn Trãi</label><br>
                     <input type="radio" id="q7d" name="q7" value="D">
                     <label for="q7d">D. Hồ Chí Minh</label>
                 </div>
             </div>
             <!-- Question 8 -->
             <div class="question">
-                <p>Câu hỏi 8: Ai là nhân vật chính trong cuộc kháng chiến chống quân Nguyên Mông lần thứ hai?</p>
+                <p>Câu hỏi 8: Tuyên ngôn độc lập của Việt Nam được công bố vào ngày nào?</p>
                 <div class="answers">
                     <input type="radio" id="q8a" name="q8" value="A">
-                    <label for="q8a">A. Trần Thái Tông</label><br>
+                    <label for="q8a">A. 2/9/1945</label><br>
                     <input type="radio" id="q8b" name="q8" value="B">
-                    <label for="q8b">B. Trần Hưng Đạo</label><br>
+                    <label for="q8b">B. 1/9/1945</label><br>
                     <input type="radio" id="q8c" name="q8" value="C">
-                    <label for="q8c">C. Lý Thường Kiệt</label><br>
+                    <label for="q8c">C. 3/9/1945</label><br>
                     <input type="radio" id="q8d" name="q8" value="D">
-                    <label for="q8d">D. Hồ Chí Minh</label>
+                    <label for="q8d">D. 4/9/1945</label>
                 </div>
             </div>
             <!-- Question 9 -->
             <div class="question">
-                <p>Câu hỏi 9: Ai là tác giả của "Bài ca dao của dân tộc"?</p>
+                <p>Câu hỏi 9: Ai là Tổng Bí thư đầu tiên của Đảng Cộng sản Việt Nam?</p>
                 <div class="answers">
                     <input type="radio" id="q9a" name="q9" value="A">
-                    <label for="q9a">A. Nguyễn Du</label><br>
+                    <label for="q9a">A. Hồ Chí Minh</label><br>
                     <input type="radio" id="q9b" name="q9" value="B">
-                    <label for="q9b">B. Hồ Chí Minh</label><br>
+                    <label for="q9b">B. Trường Chinh</label><br>
                     <input type="radio" id="q9c" name="q9" value="C">
-                    <label for="q9c">C. Nguyễn Trãi</label><br>
+                    <label for="q9c">C. Lê Duẩn</label><br>
                     <input type="radio" id="q9d" name="q9" value="D">
-                    <label for="q9d">D. Nguyễn Đình Chiểu</label>
+                    <label for="q9d">D. Phạm Văn Đồng</label>
                 </div>
             </div>
             <!-- Question 10 -->
             <div class="question">
-                <p>Câu hỏi 10: Năm nào kết thúc chiến tranh thế giới thứ hai?</p>
+                <p>Câu hỏi 10: Đại hội Đảng Cộng sản Việt Nam lần thứ nhất được tổ chức ở đâu?</p>
                 <div class="answers">
                     <input type="radio" id="q10a" name="q10" value="A">
-                    <label for="q10a">A. 1944</label><br>
+                    <label for="q10a">A. Hương Cảng</label><br>
                     <input type="radio" id="q10b" name="q10" value="B">
-                    <label for="q10b">B. 1945</label><br>
+                    <label for="q10b">B. Hà Nội</label><br>
                     <input type="radio" id="q10c" name="q10" value="C">
-                    <label for="q10c">C. 1946</label><br>
+                    <label for="q10c">C. Sài Gòn</label><br>
                     <input type="radio" id="q10d" name="q10" value="D">
-                    <label for="q10d">D. 1947</label>
+                    <label for="q10d">D. Bắc Kinh</label>
                 </div>
             </div>
             <button type="button" class="submit-btn" onclick="submitQuiz()">Nộp bài</button>
@@ -223,6 +233,24 @@
     </div>
 
     <script>
+        let timerValue = 30;
+        const timerElement = document.getElementById('timer');
+        const message = document.getElementById('message');
+
+        function startTimer() {
+            const interval = setInterval(() => {
+                const minutes = Math.floor(timerValue / 60);
+                const seconds = timerValue % 60;
+                timerElement.textContent = `00:${seconds < 10 ? '0' : ''}${seconds}`;
+                timerValue--;
+
+                if (timerValue < 0) {
+                    clearInterval(interval);
+                    submitQuiz();  // Auto-submit when time is up
+                }
+            }, 1000);
+        }
+
         function submitQuiz() {
             var form = document.getElementById('quizForm');
             var formData = new FormData(form);
@@ -249,8 +277,7 @@
                 }
             });
 
-            // Hiển thị thông báo và chuyển hướng đến trang kết quả
-            var message = document.getElementById('message');
+            // Hiển thị thông báo
             message.style.display = 'block';
             
             // Delay chuyển hướng để người dùng có thể đọc thông báo
@@ -258,6 +285,11 @@
                 window.location.href = 'result.html?correct=' + correctCount;
             }, 2000);
         }
+
+        // Bắt đầu đếm ngược khi trang được tải
+        window.onload = function() {
+            startTimer();
+        };
     </script>
 </body>
 </html>
