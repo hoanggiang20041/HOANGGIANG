@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Trang Chủ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 30px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .navbar .nav-items {
+            display: flex;
+            gap: 20px;
+        }
+        .navbar .nav-items a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .navbar .nav-items a:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            margin-top: 80px;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 20px auto;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .container h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .container p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #6c757d;
+        }
+        .post {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .post img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .post-content {
+            padding: 15px;
+        }
+        .post-title {
+            font-size: 24px;
+            margin: 0;
+            color: #333;
+        }
+        .post-body {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #666;
+        }
+        .like-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .like-btn:hover {
+            background-color: #0056b3;
+        }
+        .like-btn.liked {
+            background-color: #ff5722;
+        }
+        .like-btn:active {
+            transform: scale(0.95);
+        }
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .profile-container img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .profile-container p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+        .document-verification {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .document-verification h2 {
+            font-size: 24px;
+            color: #007bff;
+        }
+        .document-verification input[type="file"] {
+            margin-top: 10px;
+        }
+        .document-verification button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .document-verification button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo" onclick="window.location.href='home.html'">GKNM</div>
+        <div class="nav-items">
+            <a href="home.html">Trang Chủ</a>
+            <a href="#" id="support-link">Hỗ Trợ</a>
+            <a href="#" id="profile-link">Hồ Sơ</a>
+            <a href="#" id="exam-link">Buổi Thi</a>
+        </div>
+    </div>
+
+    <div class="container" id="content">
+        <h1>Chào Mừng Đến Với GKNM</h1>
+        <p>Chọn một trong các tùy chọn trên thanh điều hướng để tiếp tục.</p>
+
+        <!-- Các bài viết -->
+        <div class="post">
+            <img src="images/bai1.jpg" alt="Bài viết 1">
+            <div class="post-content">
+                <h2 class="post-title">Cách mạng tháng Tám năm 1945 - Sự kiện lịch sử vĩ đại của dân tộc Việt Nam</h2>
+                <p class="post-body">Cách đây 76 năm, từ ngày 14 đến 19/8/1945, dưới sự lãnh đạo của Đảng ta và Lãnh tụ Hồ Chí Minh, toàn dân...</p>
+                <button class="like-btn" onclick="toggleLike(this)">Thích</button>
+            </div>
+        </div>
+
+        <div class="post">
+            <img src="images/bai2.jpg" alt="Bài viết 2">
+            <div class="post-content">
+                <h2 class="post-title">Lịch Sử Việt Nam 4000 Năm Dựng Nước Và Giữ Nước, Từ Thuở Sơ Khai Đến Sau 1975 | BÍ ẨN SỬ VIỆT</h2>
+                <p class="post-body">Lịch Sử Việt Nam 4000 Năm Dựng Nước Và Giữ Nước, Từ Thuở Sơ Khai Đến Sau 1975...</p>
+                <button class="like-btn" onclick="toggleLike(this)">Thích</button>
+            </div>
+        </div>
+
+        <div class="post">
+            <img src="images/bai3.jpg" alt="Bài viết 3">
+            <div class="post-content">
+                <h2 class="post-title">300+ ảnh lịch sử sống động và đầy tình cảm</h2>
+                <p class="post-body">Hình ảnh lịch sử theo năm tháng.</p>
+                <button class="like-btn" onclick="toggleLike(this)">Thích</button>
+            </div>
+        </div>
+
+        <!-- Phần xác thực giấy tờ tùy thân -->
+        <div class="document-verification">
+            <h2>Xác Thực Giấy Tờ Tùy Thân</h2>
+            <input type="file" id="document-upload" accept=".pdf,.jpg,.png" />
+            <button id="upload-button" onclick="uploadDocument()">Gửi Báo</button>
+            <div id="verification-message" class="message hidden">Tài liệu đã được gửi thành công!</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleLike(button) {
+            button.classList.toggle('liked');
+            button.textContent = button.classList.contains('liked') ? 'Đã Thích' : 'Thích';
+        }
+
+        document.getElementById('support-link').addEventListener('click', function() {
+            window.location.href = 'hotro.html';
+        });
+
+        document.getElementById('profile-link').addEventListener('click', function() {
+            var username = localStorage.getItem('username');
+            var fullName = localStorage.getItem('fullName');
+            var dob = localStorage.getItem('dob');
+            var address = localStorage.getItem('address');
+            var currentYear = new Date().getFullYear();
+            var birthYear = new Date(dob).getFullYear();
+            var age = currentYear - birthYear;
+
+            document.getElementById('content').innerHTML = `
+                <h1>Hồ Sơ Người Dùng</h1>
+                <div class="profile-container">
+                    <img src="default-profile.jpg" alt="Ảnh đại diện">
+                    <p><strong>Họ và tên:</strong> ${fullName}</p>
+                    <p><strong>Username:</strong> ${username}</p>
+                    <p><strong>Tuổi:</strong> ${age}</p>
+                    <p><strong>Địa chỉ:</strong> ${address}</p>
+                </div>
+            `;
+        });
+
+        document.getElementById('exam-link').addEventListener('click', function() {
+            document.getElementById('content').innerHTML = `
+                <h1>Buổi Thi Lịch Sử</h1>
+                <p>Ngày: 01/01/2024</p>
+                <p>Giờ: 10:00 AM</p>
+                <button class="button" onclick="window.location.href='test.html'">Bắt Đầu Thi</button>
+            `;
+        });
+
+        function uploadDocument() {
+            // Giả sử việc upload tài liệu thành công
+            var message = document.getElementById('verification-message');
+            message.classList.remove('hidden');
+            setTimeout(function() {
+                message.classList.add('hidden');
+            }, 3000); // 3 giây để hiển thị thông báo
+        }
+    </script>
+</body>
+</html>
