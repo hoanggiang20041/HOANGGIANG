@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .nav {
+            margin-bottom: 20px;
+            background-color: #343a40;
+            padding: 10px;
+            color: white;
+        }
+        .nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .nav a:hover {
+            color: #ffc107;
+        }
+        h1 {
+            color: #343a40;
+            text-align: center;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #ced4da;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e2e6ea;
+        }
+        .id-card {
+            display: flex;
+            align-items: center;
+        }
+        .id-card img {
+            width: 100px;
+            height: 150px;
+            margin-right: 20px;
+            border: 1px solid #ccc;
+        }
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .action-buttons button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .confirm {
+            background-color: #28a745;
+            color: white;
+        }
+        .reject {
+            background-color: #dc3545;
+            color: white;
+        }
+        .login-form {
+            display: none;
+            max-width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            background-color: #ffffff;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
+        import { getFirestore, collection, getDocs, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCer_BVSGUIICAocIOwiqGwtHSbmUTy-TI",
+            authDomain: "luutru-2fc0c.firebaseapp.com",
+            projectId: "luutru-2fc0c",
+            storageBucket: "luutru-2fc0c.appspot.com",
+            messagingSenderId: "447316566416",
+            appId: "1:447316566416:web:8ea9562ef016528232d315",
+            measurementId: "G-QLE52FWS60"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        let isAdminLoggedIn = false;
+
+        function showLoginForm() {
+            document.querySelector('.login-form').style.display = 'block';
+        }
+
+        function hideLoginForm() {
+            document.querySelector('.login-form').style.display = 'none';
+        }
+
+        window.authenticateAdmin = async function(username, password) {
+            // Updated credentials
+            if (username === 'admin@gmail.com' && password === '123456') {
+                isAdminLoggedIn = true;
+                hideLoginForm();
+                displayUsers();
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
+        };
+
+        async function displayUsers() {
+            if (!isAdminLoggedIn) return;
+
+            const userList = document.getElementById('userList');
+            userList.innerHTML = ''; // Clear previous list
+
+            try {
+                const snapshot = await getDocs(collection(db, 'users'));
+                snapshot.forEach(doc => {
+                    const user = doc.data();
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.username || 'N/A'}</td>
+                        <td>${user.email || 'N/A'}</td>
+                        <td>${user.fullName || 'N/A'}</td>
+                        <td>${user.province || 'N/A'}</td>
+                    `;
+                    
+                    const idCardDiv = document.createElement('td');
+                    idCardDiv.classList.add('id-card');
+                    idCardDiv.innerHTML = `
+                        <img src="${user.idCardImage || 'default-id-card.png'}" alt="ID Card">
+                        <div class="action-buttons">
+                            <button class="confirm" onclick="confirmUser('${doc.id}')">Xác Nhận</button>
+                            <button class="reject" onclick="rejectUser('${doc.id}')">Từ Chối</button>
+                        </div>
+                    `;
+                    row.appendChild(idCardDiv);
+                    userList.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching users: ', error);
+            }
+        }
+
+        async function updateUserVerificationStatus(userId, status) {
+            const userRef = doc(db, 'users', userId);
+            await updateDoc(userRef, {
+                idCardStatus: status
+            });
+        }
+
+        window.confirmUser = function(userId) {
+            updateUserVerificationStatus(userId, 'Đã xác minh ✅.')
+                .then(() => {
+                    alert(`Người dùng với ID ${userId} đã được xác nhận.`);
+                    displayUsers(); // Refresh the list
+                })
+                .catch(error => {
+                    console.error('Error updating status: ', error);
+                });
+        };
+
+        window.rejectUser = function(userId) {
+            updateUserVerificationStatus(userId, 'Giấy tờ không hợp lệ')
+                .then(() => {
+                    alert(`Người dùng với ID ${userId} đã bị từ chối. Giấy tờ không hợp lệ.`);
+                    displayUsers(); // Refresh the list
+                })
+                .catch(error => {
+                    console.error('Error updating status: ', error);
+                });
+        };
+
+        function logout() {
+            alert('Bạn đã đăng xuất.');
+            window.location.href = 'login.html'; // Change to your login page path
+        }
+
+        // Show the login form on page load
+        window.onload = showLoginForm;
+    </script>
+</head>
+<body>
+    <div class="nav">
+        <a href="login.html" onclick="logout()">Đăng Xuất</a>
+    </div>
+    
+    <h1>Quản Lý Người Dùng</h1>
+    
+    <div class="login-form">
+        <h2>Đăng Nhập</h2>
+        <input type="text" id="adminUsername" placeholder="Tên đăng nhập" required>
+        <input type="password" id="adminPassword" placeholder="Mật khẩu" required>
+        <button onclick="authenticateAdmin(document.getElementById('adminUsername').value, document.getElementById('adminPassword').value)">Đăng Nhập</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tên Người Dùng</th>
+                <th>Email</th>
+                <th>Họ Tên</th>
+                <th>Tỉnh</th>
+                <th>Căn Cước</th>
+            </tr>
+        </thead>
+        <tbody id="userList"></tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE HTML>
+<html lang="vi">
+
+<head>
+    <title>Hồ Sơ Cá Nhân</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: "Roboto", sans-serif;
+            display: flex;
+            flex-direction: column;
+            background: #bcdee7 url("../img/bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .navbar {
+            background-color: #09a8f8;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-items a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s, background-color 0.3s;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .nav-items a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-items a.logout {
+            background-color: #ff4c4c;
+            color: white;
+        }
+
+        .nav-items a.logout:hover {
+            background-color: #ff1a1a;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .menu-toggle div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        @media (max-width: 768px) {
+            .nav-items {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #09a8f8;
+                z-index: 4;
+            }
+
+            .nav-items a {
+                padding: 10px;
+                text-align: center;
+                border-top: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-items.active {
+                display: flex;
+            }
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 60px;
+        }
+
+        .profile-container {
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #09a8f8;
+        }
+
+        h2 {
+            margin: 10px 0;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 img {
+            margin-left: 10px;
+            width: 20px;
+            height: 20px;
+        }
+
+        h3 {
+            color: #555;
+        }
+
+        #profilePicture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: block;
+            border: 2px solid #09a8f8;
+        }
+
+        .form-group {
+            margin: 20px 0;
+            position: relative;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            background-color: #09a8f8;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+
+        label:hover {
+            background-color: #007bb5;
+        }
+
+        #uploadStatus {
+            margin-top: 10px;
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCer_BVSGUIICAocIOwiqGwtHSbmUTy-TI",
+            authDomain: "luutru-2fc0c.firebaseapp.com",
+            projectId: "luutru-2fc0c",
+            storageBucket: "luutru-2fc0c.appspot.com",
+            messagingSenderId: "447316566416",
+            appId: "1:447316566416:web:8ea9562ef016528232d315",
+            measurementId: "G-QLE52FWS60"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const storage = getStorage(app);
+
+        window.onload = function () {
+            loadUserData();
+            document.querySelector('.menu-toggle').addEventListener('click', function () {
+                document.querySelector('.nav-items').classList.toggle('active');
+            });
+        };
+
+        // Function to load user data from Firestore
+        function loadUserData() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const uid = user.uid;
+                    getDoc(doc(db, 'users', uid)).then((docSnap) => {
+                        if (docSnap.exists()) {
+                            const userData = docSnap.data();
+                            document.getElementById('fullName').innerText = userData.fullName || 'Nguyễn Văn A';
+                            document.getElementById('username').innerText = userData.username || 'Chưa có tên người dùng';
+                            document.getElementById('email').innerText = user.email || 'email@example.com';
+                            document.getElementById('tel').innerText = userData.tel || 'Không có số điện thoại';
+                            document.getElementById('uploadStatus').innerText = userData.idCardStatus || '';
+
+                            const profilePicture = document.getElementById('profilePicture');
+                            if (userData.profilePicture) {
+                                profilePicture.src = userData.profilePicture;
+                                profilePicture.style.display = 'block';
+                            } else {
+                                profilePicture.style.display = 'none';
+                            }
+                        } else {
+                            console.log("No user data found for this UID.");
+                        }
+                    }).catch((error) => {
+                        console.error("Error fetching user data:", error);
+                    });
+                } else {
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+
+        // Function to upload ID card
+        // Function to upload ID card
+window.uploadIdCard = function () {
+    const fileInput = document.getElementById('idCardInput');
+    const file = fileInput.files[0];
+
+    if (file) {
+        const uid = auth.currentUser.uid;
+        const storageRef = ref(storage, 'idCards/' + uid + '/' + file.name);
+
+        uploadBytes(storageRef, file).then(() => {
+            getDownloadURL(storageRef).then((downloadURL) => {
+                const userDocRef = doc(db, 'users', uid);
+                setDoc(userDocRef, {
+                    idCardImage: downloadURL,
+                    idCardStatus: "Đang chờ xác nhận"
+                }, { merge: true }).then(() => {
+                    document.getElementById('uploadStatus').innerText = "Tải lên thành công! Đang chờ xác nhận.";
+
+                    // Log activity in userActivities collection
+                    const activityDocRef = doc(db, 'userActivities', uid + '_' + Date.now());
+                    setDoc(activityDocRef, {
+                        userId: uid,
+                        action: 'Cập nhật Giấy tờ',
+                        timestamp: new Date()
+                    }).then(() => {
+                        console.log("Activity logged: ID card upload");
+                    }).catch((error) => {
+                        console.error("Error logging activity:", error);
+                    });
+                }).catch(error => {
+                    console.error("Error updating Firestore:", error);
+                });
+            }).catch(error => {
+                console.error("Error getting download URL:", error);
+            });
+        }).catch(error => {
+            console.error("Error uploading file:", error);
+        });
+    } else {
+        alert("Vui lòng chọn một ảnh!");
+    }
+};
+
+       // Function to upload profile picture
+window.uploadProfilePicture = function () {
+    const fileInput = document.getElementById('profilePictureInput');
+    const file = fileInput.files[0];
+
+    if (file) {
+        const uid = auth.currentUser.uid;
+        const storageRef = ref(storage, 'profilePictures/' + uid + '/' + file.name);
+
+        uploadBytes(storageRef, file).then(() => {
+            getDownloadURL(storageRef).then((downloadURL) => {
+                const userDocRef = doc(db, 'users', uid);
+                setDoc(userDocRef, {
+                    profilePicture: downloadURL
+                }, { merge: true }).then(() => {
+                    document.getElementById('profilePicture').src = downloadURL;
+                    document.getElementById('profilePicture').style.display = 'block';
+                    alert("Ảnh đại diện đã được cập nhật!");
+
+                    // Log activity in userActivities collection
+                    const activityDocRef = doc(db, 'userActivities', uid + '_' + Date.now());
+                    setDoc(activityDocRef, {
+                        userId: uid,
+                        action: 'Cập nhật Ảnh đại diện',
+                        timestamp: new Date()
+                    }).then(() => {
+                        console.log("Activity logged: Profile picture upload");
+                    }).catch((error) => {
+                        console.error("Error logging activity:", error);
+                    });
+                }).catch(error => {
+                    console.error("Error updating Firestore:", error);
+                });
+            }).catch(error => {
+                console.error("Error getting download URL:", error);
+            });
+        }).catch(error => {
+            console.error("Error uploading file:", error);
+        });
+    } else {
+        alert("Vui lòng chọn một ảnh đại diện!");
+    }
+};
+    </script>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="logo">Hồ sơ cá nhân</div>
+        <div class="menu-toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="nav-items">
+            <a href="home.html">Trang Chủ</a>
+            <a href="hotro.html">Hỗ trợ</a>
+            <a href="lichsu.html">Lịch sử</a>
+            <a href="login.html" class="logout">Đăng Xuất</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="profile-container">
+            <h1>Hồ Sơ Cá Nhân</h1>
+            <img id="profilePicture" src="" alt="Ảnh đại diện">
+            <h2>Họ và Tên: <span id="fullName">Nguyễn Văn A</h2>
+            <h3>username: <span id="username">username</span></h3>
+            <h3>Email: <span id="email">email@example.com</span></h3>
+            <h3>Số điện thoại: <span id="tel">null</span></h3>
+            <div class="form-group">
+                <input type="file" id="idCardInput" onchange="uploadIdCard()">
+                <label for="idCardInput">Tải lên Giấy tờ</label>
+                <div id="uploadStatus"></div>
+            </div>
+            <div class="form-group">
+                <input type="file" id="profilePictureInput" onchange="uploadProfilePicture()">
+                <label for="profilePictureInput">Cập nhật Ảnh đại diện</label>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử</title>
+    <style>
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        nav {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        nav .logo {
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        nav .menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            background: #007BFF;
+            width: 100%;
+            left: 0;
+            top: 100%;
+            z-index: 10;
+        }
+
+        nav .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        nav .menu a.logout {
+            background-color: red;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        nav .menu-icon {
+            cursor: pointer;
+            display: block;
+        }
+
+        .menu.active {
+            display: flex;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        @media (min-width: 600px) {
+            nav .menu {
+                display: flex;
+                flex-direction: row;
+                position: static;
+                width: auto;
+            }
+
+            nav .menu a {
+                margin-right: 20px;
+            }
+
+            nav .menu-icon {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">Lịch Sử Hoạt Động</div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="menu">
+            <a href="home.html">Trang Chủ</a>
+            <a href="hotro.html">Hỗ Trợ</a>
+            <a href="profile.html">Hồ Sơ</a>
+            <a href="login.html" class="logout">Đăng Xuất</a>
+        </div>
+    </nav>
+    <h2>Lịch Sử Đăng Nhập</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Thời Gian Đăng Nhập</th>
+            </tr>
+        </thead>
+        <tbody id="historyTableBody">
+            <!-- Login history records will be inserted here -->
+        </tbody>
+    </table>
+    <h2>Lịch Sử Thi</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Họ và Tên</th>
+                <th>Điểm Thi</th>
+            </tr>
+        </thead>
+        <tbody id="quizResultsTableBody">
+            <!-- Quiz results will be inserted here -->
+        </tbody>
+    </table>
+
+    <h2>Lịch Sử Hoạt Động</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody id="activityHistoryTableBody">
+            <!-- Activity history records will be inserted here -->
+        </tbody>
+    </table>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCer_BVSGUIICAocIOwiqGwtHSbmUTy-TI",
+            authDomain: "luutru-2fc0c.firebaseapp.com",
+            projectId: "luutru-2fc0c",
+            storageBucket: "luutru-2fc0c.appspot.com",
+            messagingSenderId: "447316566416",
+            appId: "1:447316566416:web:8ea9562ef016528232d315",
+            measurementId: "G-QLE52FWS60"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.toggleMenu = function () {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('active');
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await displayLoginHistory(user.uid);
+                await displayQuizResults(user.uid);
+                await displayActivityHistory(user.uid);
+            } else {
+                alert('Bạn cần đăng nhập để xem lịch sử.');
+                window.location.href = './login.html';
+            }
+        });
+
+        async function displayLoginHistory(userId) {
+            const loginHistoryRef = collection(db, "loginHistory");
+            const q = query(loginHistoryRef, where("userId", "==", userId));
+            const querySnapshot = await getDocs(q);
+
+            const tableBody = document.getElementById('historyTableBody');
+            tableBody.innerHTML = '';
+
+            if (querySnapshot.empty) {
+                tableBody.innerHTML = '<tr><td colspan="2">Không có lịch sử đăng nhập nào.</td></tr>';
+                return;
+            }
+
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                const row = `<tr>
+                    <td>${data.username || 'N/A'}</td>
+                    <td>${data.formattedTime || 'N/A'}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        async function displayQuizResults(userId) {
+            try {
+                const quizResultsRef = collection(db, "quizResults");
+                const q = query(quizResultsRef, where("userId", "==", userId));
+                const querySnapshot = await getDocs(q);
+
+                const tableBody = document.getElementById('quizResultsTableBody');
+                tableBody.innerHTML = '';
+
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = '<tr><td colspan="2">Không có lịch sử thi nào.</td></tr>';
+                    return;
+                }
+
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const row = `<tr>
+                        <td>${data.fullName || 'N/A'}</td>
+                        <td>${data.score || 'N/A'}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Error fetching quiz results:', error);
+            }
+        }
+
+        async function displayActivityHistory(userId) {
+            try {
+                const activitiesRef = collection(db, "userActivities");
+                const q = query(activitiesRef, where("userId", "==", userId)); // Thêm điều kiện userId
+                const querySnapshot = await getDocs(q);
+
+                const tableBody = document.getElementById('activityHistoryTableBody');
+                tableBody.innerHTML = '';
+
+                if (querySnapshot.empty) {
+                    console.log('No activity history found');
+                    tableBody.innerHTML = '<tr><td colspan="1">Không có lịch sử hoạt động nào.</td></tr>';
+                    return;
+                }
+
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    console.log('Activity Data:', data);
+
+                    const row = `<tr>
+                <td>${data.action || 'N/A'}</td>
+            </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Error fetching activity history:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>

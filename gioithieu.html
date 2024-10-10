@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html lang="vi">
+<head>
+    <title>Điều lệ trước khi thi</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            display: inline-block;
+        }
+        .navbar a:hover {
+            background-color: #575757;
+        }
+        .intro-container {
+            flex: 1;
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .btn-group {
+            margin-top: 20px;
+        }
+        .start-btn, .back-btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .start-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .start-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .back-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .notification {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        .notification button {
+            margin: 5px;
+        }
+        video {
+            display: none;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .profile-name {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="home.html">Trang Chủ</a>
+        <a href="hotro.html">Hỗ Trợ</a>
+    </div>
+
+    <div class="intro-container">
+        <h1>Điều lệ trước khi thi</h1>
+        <p>Thời gian làm bài: 30 giây</p>
+        <p>Tổng số câu hỏi: 10</p>
+        <p>Nội quy thi:</p>
+        <ul>
+            <li>Không được sử dụng tài liệu.</li>
+            <li>Trả lời tất cả các câu hỏi.</li>
+            <li>Không được rời khỏi bài thi giữa chừng.</li>
+        </ul>
+
+        <div class="btn-group">
+            <button class="start-btn" id="start-button" disabled onclick="startQuiz()">Bắt đầu làm bài</button>
+            <button class="back-btn" onclick="goBack()">Quay lại</button>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <p>GKNM.com muốn truy cập vào máy ảnh của bạn để giám sát bài thi.</p>
+        <button class="allow-btn" onclick="allowAccess()">Cho phép</button>
+        <button class="deny-btn" onclick="denyAccess()">Từ chối</button>
+        <span class="notification-close" onclick="closeNotification()">&#10006;</span>
+    </div>
+
+    <video id="video" autoplay></video>
+
+    <div class="footer">
+        <p>Design by GKNM</p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCer_BVSGUIICAocIOwiqGwtHSbmUTy-TI",
+            authDomain: "luutru-2fc0c.firebaseapp.com",
+            projectId: "luutru-2fc0c",
+            storageBucket: "luutru-2fc0c.appspot.com",
+            messagingSenderId: "447316566416",
+            appId: "1:447316566416:web:8ea9562ef016528232d315",
+            measurementId: "G-QLE52FWS60"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                document.getElementById("start-button").disabled = false;
+            } else {
+                // No user is signed in
+                alert('Bạn cần đăng nhập để truy cập trang này.');
+                window.location.href = './login.html';
+            }
+        });
+
+        function closeNotification() {
+            document.getElementById("notification").style.display = "none";
+        }
+
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    const videoElement = document.getElementById('video');
+                    videoElement.srcObject = stream;
+                    videoElement.style.display = 'block';
+                })
+                .catch((error) => {
+                    console.error("Error accessing the camera: ", error);
+                    alert("Không thể truy cập vào camera. Vui lòng kiểm tra quyền.");
+                });
+        }
+
+        function allowAccess() {
+            alert("Bạn đã cho phép GKNM.com truy cập vào máy ảnh.");
+            document.getElementById("start-button").disabled = false;
+            closeNotification();
+            startCamera();
+        }
+
+        function denyAccess() {
+            alert("Bạn đã từ chối quyền truy cập vào máy ảnh. Bạn sẽ không thể thi.");
+            closeNotification();
+            setTimeout(function() {
+                window.location.href = 'home.html';
+            }, 3000);
+        }
+
+        function startQuiz() {
+            window.location.href = 'test.html';
+        }
+
+        function goBack() {
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>

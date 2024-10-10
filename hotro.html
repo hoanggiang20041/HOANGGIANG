@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="vi">
 <head>
     <title>Hỗ Trợ</title>
     <meta charset="UTF-8">
@@ -7,19 +7,26 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
+            background-image: url('images/banner1.jpg');
+            background-size: cover;
+            background-position: center;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            color: #fff;
         }
         .navbar {
-            background-color: #007bff;
+            background-color: rgba(0, 123, 255, 0.8);
             padding: 15px;
             color: white;
             text-align: center;
             font-size: 18px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
         .navbar a {
             color: white;
@@ -29,28 +36,42 @@
         .navbar a:hover {
             text-decoration: underline;
         }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 15px;
+        .banner {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             flex: 1;
+            text-align: center;
+            padding: 70px 15px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .circle-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 40px;
         }
         .contact-item {
-            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
+            margin: 20px;
+            transition: transform 0.3s;
         }
         .contact-item img {
-            width: 150px;
-            height: 150px;
             border-radius: 50%;
-            margin-bottom: 10px;
-            object-fit: cover;
+            width: 120px;
+            height: 120px;
+            transition: transform 0.3s;
+        }
+        .contact-item:hover img {
+            transform: scale(1.1);
         }
         .contact-btn {
             background-color: #007bff;
@@ -66,53 +87,172 @@
         .contact-btn:hover {
             background-color: #0056b3;
         }
-        .name {
-            margin-top: 5px;
-            font-size: 16px;
-            color: #333;
-        }
         .footer {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.8);
             padding: 10px;
             text-align: center;
             color: #777;
             border-top: 1px solid #ddd;
+            position: relative;
+        }
+        .banner h2,
+        .banner p {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .feedback-form {
+            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            align-self: center;
+        }
+        .feedback-form h3 {
+            margin-bottom: 15px;
+            color: #fff;
+            text-align: center;
+        }
+        .feedback-form label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .feedback-form input,
+        .feedback-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        .feedback-form input:focus,
+        .feedback-form textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .feedback-form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .feedback-form button:hover {
+            background-color: #0056b3;
         }
     </style>
+    <script>
+        function toggleFeedbackForm() {
+            const form = document.getElementById('feedbackForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
 </head>
 <body>
     <div class="navbar">
         <a href="home.html">Trang Chủ</a>
-        <a href="hotro.html">Hỗ Trợ</a>
+        <a href="profile.html">Hồ sơ</a>
+        <a href="lichsu.html">Lịch Sử</a>
     </div>
 
-    <div class="container">
+    <div class="banner">
+        <h2>Hỗ Trợ của Chúng Tôi</h2>
+        <p>Nếu bạn cần hỗ trợ, hãy liên hệ với chúng tôi qua các hình thức dưới đây:</p>
         <div class="circle-container">
             <div class="contact-item">
                 <img src="images/admin1.jpg" alt="Admin 1">
-                <a href="https://www.facebook.com/giang.101004/" class="contact-btn">Liên Hệ</a>
                 <div class="name">Hoàng Giang</div>
+                <a href="https://www.facebook.com/giang.101004/" class="contact-btn">Liên Hệ</a>
             </div>
             <div class="contact-item">
                 <img src="images/admin2.jpg" alt="Admin 2">
-                <a href="https://www.facebook.com/nhatkhanh.media" class="contact-btn">Liên Hệ</a>
                 <div class="name">Nhật Khánh</div>
+                <a href="https://www.facebook.com/nhatkhanh.media" class="contact-btn">Liên Hệ</a>
             </div>
             <div class="contact-item">
                 <img src="images/admin3.jpg" alt="Admin 3">
-                <a href="https://www.facebook.com/profile.php?id=100035806943827" class="contact-btn">Liên Hệ</a>
                 <div class="name">Phạm Mẫn</div>
+                <a href="https://www.facebook.com/profile.php?id=100035806943827" class="contact-btn">Liên Hệ</a>
             </div>
             <div class="contact-item">
                 <img src="images/admin4.jpg" alt="Admin 4">
-                <a href="https://www.facebook.com/profile.php?id=100072272413298" class="contact-btn">Liên Hệ</a>
                 <div class="name">Hoài Nam</div>
+                <a href="https://www.facebook.com/profile.php?id=100072272413298" class="contact-btn">Liên Hệ</a>
             </div>
+        </div>
+        <div class="contact-item">
+            <a href="tel:+84522336052" class="contact-btn">Gọi Hỗ Trợ</a>
+        </div>
+
+        <button class="contact-btn" onclick="toggleFeedbackForm()">Gửi Ý Kiến</button>
+        
+        <div id="feedbackForm" class="feedback-form">
+            <h3>Gửi Ý Kiến</h3>
+            <form action="mailto:giang10012004@gmail.com" method="post" enctype="text/plain">
+                <label for="name">Tên:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="message">Ý Kiến:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+                <button type="submit">Gửi</button>
+            </form>
         </div>
     </div>
 
     <div class="footer">
         © 2024 bản quyền thuộc GKNM
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-auth-compat.js"></script>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCer_BVSGUIICAocIOwiqGwtHSbmUTy-TI",
+            authDomain: "luutru-2fc0c.firebaseapp.com",
+            projectId: "luutru-2fc0c",
+            storageBucket: "luutru-2fc0c.appspot.com",
+            messagingSenderId: "447316566416",
+            appId: "1:447316566416:web:8ea9562ef016528232d315",
+            measurementId: "G-QLE52FWS60"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // User is signed in
+                await displayLoginHistory(user.uid);
+                await displayQuizResults(user.uid);
+                await displayActivityHistory(user.uid);
+            } else {
+                // No user is signed in
+                alert('Bạn cần đăng nhập để xem trang này.');
+                window.location.href = './login.html';
+            }
+        });
+
+        async function displayLoginHistory(userId) {
+            // Fetch and display login history
+        }
+
+        async function displayQuizResults(userId) {
+            // Fetch and display quiz results
+        }
+
+        async function displayActivityHistory(userId) {
+            // Fetch and display activity history
+        }
+    </script>
 </body>
 </html>

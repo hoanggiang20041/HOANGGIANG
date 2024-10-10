@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
-    <title>Chứng chỉ</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Chứng chỉ</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,10 +13,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
         }
         .container {
             text-align: center;
+            max-width: 90%;
         }
         .download-button {
             margin-top: 20px;
@@ -27,35 +29,83 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .download-button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
+        .download-button:hover {
+            background-color: #0056b3;
         }
         img {
-            max-width: 50%; /* Giảm kích thước hình ảnh để vừa trang */
+            max-width: 50%;
             height: auto;
-            border: 1px solid #ddd; /* Thêm viền cho hình ảnh */
+            display: block;
+            margin: 20px auto;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 20px;
+            color: #28a745;
+            margin: 0 0 20px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Chứng chỉ</h1>
-        <!-- Đường dẫn đến hình ảnh chứng chỉ -->
-        <img id="chungchi" src="https://drive.google.com/uc?export=view&id=1K3cqCpufF_Ewy1ipR_UsaNyw_HvZ9BZX"alt="Chứng chỉ" />
-
+        <h2>Chúc mừng bạn đã hoàn thành tốt bài thi!</h2>
+        <img id="chungchi" src="images/chungchi.jpg" alt="Chứng chỉ" />
         <button id="downloadButton" class="download-button">Tải chứng chỉ</button>
     </div>
-
+    <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-auth-compat.js"></script>
     <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCer_BVSGUIICAocIOwiqGwtHSbmUTy-TI",
+            authDomain: "luutru-2fc0c.firebaseapp.com",
+            projectId: "luutru-2fc0c",
+            storageBucket: "luutru-2fc0c.appspot.com",
+            messagingSenderId: "447316566416",
+            appId: "1:447316566416:web:8ea9562ef016528232d315",
+            measurementId: "G-QLE52FWS60"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // User is signed in
+                await displayLoginHistory(user.uid);
+                await displayQuizResults(user.uid);
+                await displayActivityHistory(user.uid);
+            } else {
+                // No user is signed in
+                alert('Bạn cần đăng nhập để xem chứng chỉ.');
+                window.location.href = './login.html';
+            }
+        });
+
         document.getElementById('downloadButton').addEventListener('click', function() {
-            var img = document.getElementById('chungchi');
-            var link = document.createElement('a');
+            const img = document.getElementById('chungchi');
+            const link = document.createElement('a');
             link.href = img.src;
-            link.download = 'chungchi.jpg'; // Đảm bảo đúng định dạng tệp
+            link.download = 'chungchi.jpg';
             link.click();
         });
+
+        async function displayLoginHistory(userId) {
+            // Fetch and display login history
+        }
+
+        async function displayQuizResults(userId) {
+            // Fetch and display quiz results
+        }
+
+        async function displayActivityHistory(userId) {
+            // Fetch and display activity history
+        }
     </script>
 </body>
 </html>

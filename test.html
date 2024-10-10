@@ -1,295 +1,415 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="vi">
+
 <head>
-    <title>Thi Lịch sử</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài thi trắc nghiệm Lịch sử</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            color: #333;
         }
+
         .quiz-container {
-            background-color: #fff;
+            max-width: 900px;
+            margin: 40px auto;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            width: 100%;
-            margin: auto;
-            flex: 1;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
             text-align: center;
+            color: #2c7a7b;
+            margin-bottom: 40px;
+            font-weight: 700;
         }
-        .quiz-container h1 {
+        h2 {
+            text-align: center;
+            color: #0a1010;
             margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
+            font-weight: 700;
         }
+
+        .username {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
         .question {
-            margin-bottom: 20px;
-            text-align: left;
+            margin-bottom: 30px;
         }
+
         .question p {
-            margin-bottom: 8px;
-            color: #333;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
         }
-        .answers input[type="radio"] {
+
+        .answers label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .answers input {
             margin-right: 10px;
         }
-        .submit-btn {
-            padding: 10px;
-            background-color: #4CAF50;
+
+        .submit-btn,
+        .cert-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #2c7a7b;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
+            font-size: 18px;
             cursor: pointer;
-            font-size: 16px;
+            transition: background-color 0.3s;
+            font-weight: bold;
+            margin-top: 10px;
         }
-        .submit-btn:hover {
-            background-color: #45a049;
+
+        .submit-btn:hover,
+        .cert-btn:hover {
+            background-color: #285e61;
         }
+
         .message {
             display: none;
-            padding: 15px;
+            padding: 20px;
             margin-top: 20px;
-            border-radius: 4px;
-            background-color: #dff0d8;
-            color: #3c763d;
-            border: 1px solid #d6e9c6;
-            font-size: 16px;
-        }
-        .footer {
-            background-color: #fff;
-            padding: 10px;
             text-align: center;
-            color: #333;
-            border-top: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            font-size: 18px;
         }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #2c7a7b;
+            color: white;
+            margin-top: auto;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
         .timer {
-            font-size: 30px;
-            margin: 20px 0;
-            color: #d9534f;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 22px;
+            color: #e53e3e;
             font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .quiz-container {
+                padding: 15px;
+            }
+
+            .submit-btn {
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .question p {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="quiz-container">
-        <h1>Thi Lịch sử</h1>
-        <p id="username">Tên người dùng: <strong>NguyenHoangGiang</strong></p>
-        <div id="timer" class="timer">00:30</div>
-        <form id="quizForm">
-            <!-- Question 1 -->
-            <div class="question">
-                <p>Câu hỏi 1: Năm nào Hồ Chí Minh ra đi tìm đường cứu nước?</p>
-                <div class="answers">
-                    <input type="radio" id="q1a" name="q1" value="A">
-                    <label for="q1a">A. 1911</label><br>
-                    <input type="radio" id="q1b" name="q1" value="B">
-                    <label for="q1b">B. 1912</label><br>
-                    <input type="radio" id="q1c" name="q1" value="C">
-                    <label for="q1c">C. 1913</label><br>
-                    <input type="radio" id="q1d" name="q1" value="D">
-                    <label for="q1d">D. 1914</label>
-                </div>
-            </div>
-            <!-- Question 2 -->
-            <div class="question">
-                <p>Câu hỏi 2: Cuộc kháng chiến chống Pháp lần thứ nhất bắt đầu vào năm nào?</p>
-                <div class="answers">
-                    <input type="radio" id="q2a" name="q2" value="A">
-                    <label for="q2a">A. 1858</label><br>
-                    <input type="radio" id="q2b" name="q2" value="B">
-                    <label for="q2b">B. 1884</label><br>
-                    <input type="radio" id="q2c" name="q2" value="C">
-                    <label for="q2c">C. 1945</label><br>
-                    <input type="radio" id="q2d" name="q2" value="D">
-                    <label for="q2d">D. 1954</label>
-                </div>
-            </div>
-            <!-- Question 3 -->
-            <div class="question">
-                <p>Câu hỏi 3: Ai là người đầu tiên đặt chân đến Việt Nam vào thế kỷ 16?</p>
-                <div class="answers">
-                    <input type="radio" id="q3a" name="q3" value="A">
-                    <label for="q3a">A. Ferdinand Magellan</label><br>
-                    <input type="radio" id="q3b" name="q3" value="B">
-                    <label for="q3b">B. Vasco da Gama</label><br>
-                    <input type="radio" id="q3c" name="q3" value="C">
-                    <label for="q3c">C. Marco Polo</label><br>
-                    <input type="radio" id="q3d" name="q3" value="D">
-                    <label for="q3d">D. Christophe Colomb</label>
-                </div>
-            </div>
-            <!-- Question 4 -->
-            <div class="question">
-                <p>Câu hỏi 4: Ai là tác giả của "Hịch tướng sĩ"?</p>
-                <div class="answers">
-                    <input type="radio" id="q4a" name="q4" value="A">
-                    <label for="q4a">A. Trần Hưng Đạo</label><br>
-                    <input type="radio" id="q4b" name="q4" value="B">
-                    <label for="q4b">B. Lý Thường Kiệt</label><br>
-                    <input type="radio" id="q4c" name="q4" value="C">
-                    <label for="q4c">C. Nguyễn Trãi</label><br>
-                    <input type="radio" id="q4d" name="q4" value="D">
-                    <label for="q4d">D. Hồ Chí Minh</label>
-                </div>
-            </div>
-            <!-- Question 5 -->
-            <div class="question">
-                <p>Câu hỏi 5: Năm nào Việt Nam giành được độc lập từ Pháp?</p>
-                <div class="answers">
-                    <input type="radio" id="q5a" name="q5" value="A">
-                    <label for="q5a">A. 1945</label><br>
-                    <input type="radio" id="q5b" name="q5" value="B">
-                    <label for="q5b">B. 1954</label><br>
-                    <input type="radio" id="q5c" name="q5" value="C">
-                    <label for="q5c">C. 1975</label><br>
-                    <input type="radio" id="q5d" name="q5" value="D">
-                    <label for="q5d">D. 1980</label>
-                </div>
-            </div>
-            <!-- Question 6 -->
-            <div class="question">
-                <p>Câu hỏi 6: Đâu là sự kiện khởi đầu của cuộc kháng chiến chống Mỹ cứu nước?</p>
-                <div class="answers">
-                    <input type="radio" id="q6a" name="q6" value="A">
-                    <label for="q6a">A. Cuộc tấn công vào căn cứ quân sự Mỹ ở Đà Nẵng</label><br>
-                    <input type="radio" id="q6b" name="q6" value="B">
-                    <label for="q6b">B. Vụ tấn công vào sân bay Tân Sơn Nhất</label><br>
-                    <input type="radio" id="q6c" name="q6" value="C">
-                    <label for="q6c">C. Cuộc chiến tranh Đông Dương lần thứ hai</label><br>
-                    <input type="radio" id="q6d" name="q6" value="D">
-                    <label for="q6d">D. Chiến dịch Điện Biên Phủ</label>
-                </div>
-            </div>
-            <!-- Question 7 -->
-            <div class="question">
-                <p>Câu hỏi 7: Ai là nhân vật chính trong cuộc kháng chiến chống quân Nguyên Mông lần thứ nhất?</p>
-                <div class="answers">
-                    <input type="radio" id="q7a" name="q7" value="A">
-                    <label for="q7a">A. Trần Hưng Đạo</label><br>
-                    <input type="radio" id="q7b" name="q7" value="B">
-                    <label for="q7b">B. Lê Lợi</label><br>
-                    <input type="radio" id="q7c" name="q7" value="C">
-                    <label for="q7c">C. Nguyễn Trãi</label><br>
-                    <input type="radio" id="q7d" name="q7" value="D">
-                    <label for="q7d">D. Hồ Chí Minh</label>
-                </div>
-            </div>
-            <!-- Question 8 -->
-            <div class="question">
-                <p>Câu hỏi 8: Tuyên ngôn độc lập của Việt Nam được công bố vào ngày nào?</p>
-                <div class="answers">
-                    <input type="radio" id="q8a" name="q8" value="A">
-                    <label for="q8a">A. 2/9/1945</label><br>
-                    <input type="radio" id="q8b" name="q8" value="B">
-                    <label for="q8b">B. 1/9/1945</label><br>
-                    <input type="radio" id="q8c" name="q8" value="C">
-                    <label for="q8c">C. 3/9/1945</label><br>
-                    <input type="radio" id="q8d" name="q8" value="D">
-                    <label for="q8d">D. 4/9/1945</label>
-                </div>
-            </div>
-            <!-- Question 9 -->
-            <div class="question">
-                <p>Câu hỏi 9: Ai là Tổng Bí thư đầu tiên của Đảng Cộng sản Việt Nam?</p>
-                <div class="answers">
-                    <input type="radio" id="q9a" name="q9" value="A">
-                    <label for="q9a">A. Hồ Chí Minh</label><br>
-                    <input type="radio" id="q9b" name="q9" value="B">
-                    <label for="q9b">B. Trường Chinh</label><br>
-                    <input type="radio" id="q9c" name="q9" value="C">
-                    <label for="q9c">C. Lê Duẩn</label><br>
-                    <input type="radio" id="q9d" name="q9" value="D">
-                    <label for="q9d">D. Phạm Văn Đồng</label>
-                </div>
-            </div>
-            <!-- Question 10 -->
-            <div class="question">
-                <p>Câu hỏi 10: Đại hội Đảng Cộng sản Việt Nam lần thứ nhất được tổ chức ở đâu?</p>
-                <div class="answers">
-                    <input type="radio" id="q10a" name="q10" value="A">
-                    <label for="q10a">A. Hương Cảng</label><br>
-                    <input type="radio" id="q10b" name="q10" value="B">
-                    <label for="q10b">B. Hà Nội</label><br>
-                    <input type="radio" id="q10c" name="q10" value="C">
-                    <label for="q10c">C. Sài Gòn</label><br>
-                    <input type="radio" id="q10d" name="q10" value="D">
-                    <label for="q10d">D. Bắc Kinh</label>
-                </div>
-            </div>
-            <button type="button" class="submit-btn" onclick="submitQuiz()">Nộp bài</button>
-        </form>
+        <h1>Bài thi trắc nghiệm Lịch sử</h1>
+        <h2>Bạn phải đúng 15/20 câu </h2>
+        <h2>Mới được nhận chứng chỉ </h2>
+            
+        
+        <p class="username" id="username">Tên người dùng: Đang tải...</p>
+        <div id="timer" class="timer">Thời gian: 04:00</div>
+        <form id="quizForm"></form>
+        <button type="button" class="submit-btn" onclick="submitQuiz()">Nộp bài</button>
         <div id="message" class="message">Cảm ơn bạn đã hoàn thành bài thi!</div>
-        <div class="footer">
-            <p>Design by GKNM</p>
-        </div>
+        <button type="button" class="cert-btn" id="certBtn" style="display: none;" onclick="getCertificate()">Nhận chứng
+            chỉ</button>
+    </div>
+    <div class="footer">
+        <p>Thiết kế bởi GKNM</p>
     </div>
 
+    <!-- Firebase SDK (Dùng phiên bản không phải mô-đun) -->
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-firestore-compat.js"></script>
+
     <script>
-        let timerValue = 30;
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCer_BVSGUIICAocIOwiqGwtHSbmUTy-TI",
+            authDomain: "luutru-2fc0c.firebaseapp.com",
+            projectId: "luutru-2fc0c",
+            storageBucket: "luutru-2fc0c.appspot.com",
+            messagingSenderId: "447316566416",
+            appId: "1:447316566416:web:8ea9562ef016528232d315",
+            measurementId: "G-QLE52FWS60"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let timerValue = 240;
         const timerElement = document.getElementById('timer');
         const message = document.getElementById('message');
+        const quizForm = document.getElementById('quizForm');
+        const certBtn = document.getElementById('certBtn');
+        const usernameElement = document.getElementById('username');
+        let selectedQuestions = []; // Biến toàn cục lưu các câu hỏi đã chọn
+        let username = ""; // Biến lưu trữ tên người dùng
 
+        // Mảng câu hỏi với 50 câu
+        const questionBank = [
+    { question: 'Năm nào Hồ Chí Minh ra đi tìm đường cứu nước?', options: ['1911', '1912', '1913', '1914'], answer: '1911' },
+    { question: 'Cuộc kháng chiến chống Pháp lần thứ nhất bắt đầu vào năm nào?', options: ['1858', '1884', '1945', '1954'], answer: '1858' },
+    { question: 'Ai là người đầu tiên đặt chân đến Việt Nam vào thế kỷ 16?', options: ['Ferdinand Magellan', 'Vasco da Gama', 'Marco Polo', 'Christophe Colomb'], answer: 'Ferdinand Magellan' },
+    { question: 'Ai là tác giả của "Hịch tướng sĩ"?', options: ['Trần Hưng Đạo', 'Lý Thường Kiệt', 'Nguyễn Trãi', 'Hồ Chí Minh'], answer: 'Trần Hưng Đạo' },
+    { question: 'Năm nào Việt Nam giành được độc lập từ Pháp?', options: ['1945', '1954', '1975', '1980'], answer: '1954' },
+    { question: 'Đâu là sự kiện khởi đầu của cuộc kháng chiến chống Mỹ cứu nước?', options: ['Cuộc tấn công vào căn cứ quân sự Mỹ ở Đà Nẵng', 'Vụ tấn công vào sân bay Tân Sơn Nhất', 'Cuộc chiến tranh Đông Dương lần thứ hai', 'Chiến dịch Điện Biên Phủ'], answer: 'Cuộc tấn công vào căn cứ quân sự Mỹ ở Đà Nẵng' },
+    { question: 'Ai là người viết bài thơ "Nam quốc sơn hà"?', options: ['Lý Thường Kiệt', 'Nguyễn Trãi', 'Hồ Chí Minh', 'Trần Hưng Đạo'], answer: 'Lý Thường Kiệt' },
+    { question: 'Năm nào kết thúc chiến tranh Việt Nam?', options: ['1975', '1986', '1990', '2000'], answer: '1975' },
+    { question: 'Ai là vị tướng nổi tiếng trong cuộc kháng chiến chống Pháp?', options: ['Võ Nguyên Giáp', 'Nguyễn Huệ', 'Lê Lợi', 'Trần Quốc Tuấn'], answer: 'Võ Nguyên Giáp' },
+    { question: 'Tuyên ngôn độc lập của Việt Nam được đọc vào ngày nào?', options: ['2 tháng 9 năm 1945', '1 tháng 1 năm 1946', '3 tháng 5 năm 1950', '10 tháng 10 năm 1954'], answer: '2 tháng 9 năm 1945' },
+    { question: 'Ai là người đầu tiên lãnh đạo cuộc kháng chiến chống Pháp?', options: ['Hồ Chí Minh', 'Trần Hưng Đạo', 'Lê Lợi', 'Nguyễn Huệ'], answer: 'Hồ Chí Minh' },
+    { question: 'Cuộc chiến tranh Đông Dương lần thứ hai bắt đầu vào năm nào?', options: ['1945', '1946', '1947', '1948'], answer: '1946' },
+    { question: 'Ai là người sáng lập Đảng Cộng sản Việt Nam?', options: ['Hồ Chí Minh', 'Nguyễn Ái Quốc', 'Lê Duẩn', 'Trường Chinh'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra chiến dịch Điện Biên Phủ?', options: ['1954', '1955', '1956', '1957'], answer: '1954' },
+    { question: 'Ai là nhà thơ nổi tiếng trong thời kỳ kháng chiến chống Mỹ?', options: ['Tố Hữu', 'Chế Lan Viên', 'Xuân Diệu', 'Nguyễn Đình Thi'], answer: 'Tố Hữu' },
+    { question: 'Chiến dịch Hồ Chí Minh diễn ra vào năm nào?', options: ['1975', '1976', '1977', '1978'], answer: '1975' },
+    { question: 'Ai là người chủ trì hội nghị Geneva về Việt Nam?', options: ['Hồ Chí Minh', 'Phạm Văn Đồng', 'Võ Nguyên Giáp', 'Lê Duẩn'], answer: 'Phạm Văn Đồng' },
+    { question: 'Năm nào Việt Nam thống nhất?', options: ['1975', '1976', '1980', '1986'], answer: '1975' },
+    { question: 'Ai là vị vua nổi tiếng trong cuộc kháng chiến chống Pháp?', options: ['Lê Lợi', 'Nguyễn Huệ', 'Trần Nhân Tông', 'Lý Thái Tổ'], answer: 'Lê Lợi' },
+    { question: 'Năm nào diễn ra cuộc khởi nghĩa Yên Thế?', options: ['1884', '1885', '1886', '1887'], answer: '1884' },
+    { question: 'Ai là người sáng lập ra nhà nước Việt Nam Dân chủ Cộng hòa?', options: ['Hồ Chí Minh', 'Lê Duẩn', 'Trường Chinh', 'Nguyễn Văn Linh'], answer: 'Hồ Chí Minh' },
+    { question: 'Chiến tranh Việt Nam kéo dài từ năm nào đến năm nào?', options: ['1954 - 1975', '1945 - 1975', '1946 - 1975', '1960 - 1975'], answer: '1945 - 1975' },
+    { question: 'Tại sao Việt Nam có tên gọi là "Đất nước hình chữ S"?', options: ['Vì địa hình', 'Vì lịch sử', 'Vì văn hóa', 'Vì khí hậu'], answer: 'Vì địa hình' },
+    { question: 'Ai là tác giả của tác phẩm "Đại cáo bình Nguyên"?', options: ['Nguyễn Trãi', 'Trần Hưng Đạo', 'Lý Thường Kiệt', 'Hồ Chí Minh'], answer: 'Nguyễn Trãi' },
+    { question: 'Cuộc kháng chiến chống Mỹ kéo dài bao lâu?', options: ['20 năm', '15 năm', '10 năm', '5 năm'], answer: '20 năm' },
+    { question: 'Ai là người lãnh đạo Việt Minh trong kháng chiến chống Pháp?', options: ['Hồ Chí Minh', 'Võ Nguyên Giáp', 'Trường Chinh', 'Lê Duẩn'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra cuộc cách mạng tháng Tám?', options: ['1945', '1946', '1947', '1948'], answer: '1945' },
+    { question: 'Ai là người viết "Tuyên ngôn độc lập" của Việt Nam?', options: ['Hồ Chí Minh', 'Nguyễn Trãi', 'Trường Chinh', 'Lê Duẩn'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra vụ thảm sát Mỹ Lai?', options: ['1968', '1969', '1970', '1971'], answer: '1968' },
+    { question: 'Ai là người chỉ huy quân đội Việt Nam trong chiến dịch Điện Biên Phủ?', options: ['Võ Nguyên Giáp', 'Nguyễn Huệ', 'Trần Hưng Đạo', 'Lê Lợi'], answer: 'Võ Nguyên Giáp' },
+    { question: 'Năm nào diễn ra hội nghị Paris về hòa bình ở Việt Nam?', options: ['1973', '1974', '1975', '1976'], answer: '1973' },
+    { question: 'Năm nào Việt Nam gia nhập Liên Hợp Quốc?', options: ['1975', '1976', '1980', '1986'], answer: '1977' },
+    { question: 'Ai là người đầu tiên xây dựng nhà nước phong kiến ở Việt Nam?', options: ['Lý Thái Tổ', 'Trần Thánh Tông', 'Lê Lợi', 'Nguyễn Huệ'], answer: 'Lý Thái Tổ' },
+    { question: 'Năm nào diễn ra cuộc khởi nghĩa Lam Sơn?', options: ['1418', '1428', '1430', '1431'], answer: '1418' },
+    { question: 'Ai là người lãnh đạo cuộc khởi nghĩa Tây Sơn?', options: ['Nguyễn Huệ', 'Nguyễn Nhạc', 'Nguyễn Lữ', 'Nguyễn Trãi'], answer: 'Nguyễn Huệ' },
+    { question: 'Năm nào diễn ra chiến tranh biên giới Việt - Trung?', options: ['1979', '1980', '1981', '1982'], answer: '1979' },
+    { question: 'Ai là người đã viết "Hịch tướng sĩ"?', options: ['Trần Hưng Đạo', 'Nguyễn Trãi', 'Lý Thường Kiệt', 'Hồ Chí Minh'], answer: 'Trần Hưng Đạo' },
+    { question: 'Năm nào cuộc chiến tranh Việt Nam chính thức kết thúc?', options: ['1975', '1976', '1977', '1978'], answer: '1975' },
+    { question: 'Ai là người chỉ huy quân đội Việt Nam trong chiến dịch Hồ Chí Minh?', options: ['Võ Nguyên Giáp', 'Nguyễn Huệ', 'Lê Duẩn', 'Trường Chinh'], answer: 'Võ Nguyên Giáp' },
+    { question: 'Năm nào diễn ra cuộc khởi nghĩa Bắc Sơn?', options: ['1940', '1941', '1942', '1943'], answer: '1940' },
+    { question: 'Ai là người lãnh đạo cuộc khởi nghĩa Nhật Tân?', options: ['Nguyễn Huệ', 'Lê Lợi', 'Trần Hưng Đạo', 'Nguyễn Trãi'], answer: 'Nguyễn Huệ' },
+    { question: 'Năm nào diễn ra chiến dịch Bình Giã?', options: ['1964', '1965', '1966', '1967'], answer: '1965' },
+    { question: 'Ai là người đã phát động cuộc kháng chiến chống Pháp?', options: ['Hồ Chí Minh', 'Võ Nguyên Giáp', 'Lê Duẩn', 'Trường Chinh'], answer: 'Hồ Chí Minh' },
+    { question: 'Tác phẩm nào được coi là "Tuyên ngôn độc lập" của nhân dân Việt Nam?', options: ['Tuyên ngôn độc lập', 'Đại cáo bình Nguyên', 'Hịch tướng sĩ', 'Lịch sử nước ta'], answer: 'Tuyên ngôn độc lập' },
+    { question: 'Năm nào diễn ra hội nghị thành lập Đảng Cộng sản Việt Nam?', options: ['1930', '1931', '1932', '1933'], answer: '1930' },
+    { question: 'Ai là người viết "Bình Nguyên"?', options: ['Nguyễn Trãi', 'Trần Hưng Đạo', 'Lê Lợi', 'Nguyễn Huệ'], answer: 'Nguyễn Trãi' },
+    { question: 'Năm nào diễn ra cuộc khởi nghĩa Pháp?', options: ['1884', '1885', '1886', '1887'], answer: '1885' },
+    { question: 'Ai là người lãnh đạo cuộc khởi nghĩa nông dân lớn nhất ở Việt Nam?', options: ['Nguyễn Huệ', 'Lê Lợi', 'Trần Hưng Đạo', 'Nguyễn Trãi'], answer: 'Nguyễn Huệ' },
+    { question: 'Năm nào diễn ra cuộc kháng chiến chống Pháp lần thứ hai?', options: ['1945', '1946', '1947', '1948'], answer: '1946' },
+    { question: 'Ai là người đứng đầu chính phủ Việt Nam Dân chủ Cộng hòa đầu tiên?', options: ['Hồ Chí Minh', 'Lê Duẩn', 'Trường Chinh', 'Nguyễn Văn Linh'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra chiến dịch Điện Biên Phủ?', options: ['1954', '1955', '1956', '1957'], answer: '1954' },
+    { question: 'Ai là vị tướng nổi tiếng trong chiến dịch Hồ Chí Minh?', options: ['Võ Nguyên Giáp', 'Lê Lợi', 'Nguyễn Huệ', 'Trần Quốc Tuấn'], answer: 'Võ Nguyên Giáp' },
+    { question: 'Năm nào diễn ra chiến tranh Việt - Pháp?', options: ['1945', '1946', '1947', '1948'], answer: '1946' },
+    { question: 'Ai là người đã lãnh đạo cuộc khởi nghĩa chống thực dân Pháp?', options: ['Hồ Chí Minh', 'Lê Lợi', 'Nguyễn Huệ', 'Trần Hưng Đạo'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra cuộc kháng chiến chống Mỹ?', options: ['1954', '1960', '1965', '1975'], answer: '1965' },
+    { question: 'Ai là người đã viết "Lịch sử nước ta"?', options: ['Nguyễn Trãi', 'Trần Hưng Đạo', 'Hồ Chí Minh', 'Võ Nguyên Giáp'], answer: 'Nguyễn Trãi' },
+    { question: 'Năm nào diễn ra hội nghị Geneva?', options: ['1954', '1955', '1956', '1957'], answer: '1954' },
+    { question: 'Ai là người đã tổ chức cuộc khởi nghĩa Yên Thế?', options: ['Đề Thám', 'Nguyễn Huệ', 'Lê Lợi', 'Trần Hưng Đạo'], answer: 'Đề Thám' },
+    { question: 'Năm nào diễn ra cuộc kháng chiến chống Pháp lần thứ ba?', options: ['1945', '1946', '1947', '1948'], answer: '1946' },
+    { question: 'Ai là người đã lãnh đạo cuộc kháng chiến chống Pháp?', options: ['Hồ Chí Minh', 'Võ Nguyên Giáp', 'Trường Chinh', 'Lê Duẩn'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra cuộc khởi nghĩa chống Mỹ?', options: ['1954', '1965', '1968', '1975'], answer: '1965' },
+    { question: 'Ai là người đứng đầu chính phủ đầu tiên của Việt Nam?', options: ['Hồ Chí Minh', 'Lê Duẩn', 'Trường Chinh', 'Nguyễn Văn Linh'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra cuộc chiến tranh Việt - Mỹ?', options: ['1954', '1960', '1965', '1975'], answer: '1965' },
+    { question: 'Ai là người đã lãnh đạo cuộc kháng chiến chống thực dân Pháp?', options: ['Hồ Chí Minh', 'Lê Lợi', 'Nguyễn Huệ', 'Trần Hưng Đạo'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra cuộc chiến tranh Đông Dương lần thứ nhất?', options: ['1945', '1946', '1947', '1948'], answer: '1946' },
+    { question: 'Ai là người đã lãnh đạo cuộc khởi nghĩa Lam Sơn?', options: ['Lê Lợi', 'Nguyễn Huệ', 'Trần Hưng Đạo', 'Nguyễn Trãi'], answer: 'Lê Lợi' },
+    { question: 'Năm nào diễn ra cuộc kháng chiến chống Pháp lần thứ tư?', options: ['1946', '1947', '1948', '1949'], answer: '1946' },
+    { question: 'Ai là người đã lãnh đạo cuộc kháng chiến chống Mỹ ở miền Bắc?', options: ['Hồ Chí Minh', 'Võ Nguyên Giáp', 'Trường Chinh', 'Lê Duẩn'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra cuộc chiến tranh Việt - Pháp lần thứ hai?', options: ['1946', '1947', '1948', '1949'], answer: '1946' },
+    { question: 'Ai là người đã lãnh đạo cuộc kháng chiến chống thực dân Pháp lần thứ hai?', options: ['Hồ Chí Minh', 'Lê Lợi', 'Nguyễn Huệ', 'Trần Hưng Đạo'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra cuộc khởi nghĩa Bảy Tháng?', options: ['1945', '1946', '1947', '1948'], answer: '1945' },
+    { question: 'Ai là người đã lãnh đạo cuộc kháng chiến chống Pháp ở miền Trung?', options: ['Hồ Chí Minh', 'Võ Nguyên Giáp', 'Lê Duẩn', 'Trường Chinh'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra cuộc kháng chiến chống Pháp ở miền Bắc?', options: ['1945', '1946', '1947', '1948'], answer: '1946' },
+    { question: 'Ai là người đứng đầu chính phủ Việt Nam trong giai đoạn kháng chiến chống Pháp?', options: ['Hồ Chí Minh', 'Lê Duẩn', 'Trường Chinh', 'Nguyễn Văn Linh'], answer: 'Hồ Chí Minh' },
+    { question: 'Năm nào diễn ra cuộc kháng chiến chống thực dân Pháp lần thứ ba?', options: ['1945', '1946', '1947', '1948'], answer: '1946' },
+    { question: 'Ai là người đã lãnh đạo cuộc khởi nghĩa Yên Thế lần thứ hai?', options: ['Đề Thám', 'Hồ Chí Minh', 'Võ Nguyên Giáp', 'Nguyễn Huệ'], answer: 'Đề Thám' },
+        ];
+
+        // Hàm lấy tên đầy đủ của người dùng từ Firestore
+        function getUsername(userId) {
+            db.collection("users").doc(userId).get().then((doc) => {
+                if (doc.exists) {
+                    const fullName = doc.data().fullName;  // Lấy fullName
+                    usernameElement.textContent = `Họ và tên: "${fullName}"`;
+                    username = fullName;
+                } else {
+                    console.log("Không tìm thấy tài liệu người dùng!");
+                }
+            }).catch((error) => {
+                console.log("Lỗi khi lấy tài liệu:", error);
+            });
+        }
+
+        // Tự động lấy userId từ Firebase Authentication
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                const userId = user.uid; // Lấy userId của người dùng đã đăng nhập
+                getUsername(userId); // Lấy tên đầy đủ từ Firestore
+                startTimer();
+                displayQuestions();
+            } else {
+                // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Lưu kết quả vào Firestore
+        function saveQuizResult(correctCount) {
+            const userId = firebase.auth().currentUser.uid; // Lấy userId từ Firebase Authentication
+            db.collection("quizResults").add({
+                userId: userId, // Thêm userId vào tài liệu
+                fullName: username,
+                score: correctCount,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                console.log("Quiz result successfully written!");
+            }).catch((error) => {
+                console.error("Error writing quiz result: ", error);
+            });
+        }
+
+        // Hàm chọn ngẫu nhiên n câu hỏi từ bộ câu hỏi lớn
+        function getRandomQuestions(n) {
+            const shuffled = questionBank.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, n);
+        }
+
+        // Hiển thị câu hỏi
+        function displayQuestions() {
+            const quizForm = document.getElementById("quizForm");
+            if (!quizForm) {
+                console.error("Không tìm thấy phần tử #quizForm");
+                return;
+            }
+
+            selectedQuestions = getRandomQuestions(20); // Chọn ngẫu nhiên 10 câu hỏi và lưu lại
+            selectedQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+
+                const questionTitle = document.createElement('p');
+                questionTitle.textContent = `Câu hỏi ${index + 1}: ${q.question}`;
+                questionDiv.appendChild(questionTitle);
+
+                q.options.forEach((option, i) => {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `q${index + 1}`;
+                    radio.value = option;
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(` ${String.fromCharCode(65 + i)}. ${option}`));
+                    questionDiv.appendChild(label);
+                    questionDiv.appendChild(document.createElement('br'));
+                });
+
+                quizForm.appendChild(questionDiv);
+            });
+        }
+
+        // Đếm ngược khi trang được tải
         function startTimer() {
             const interval = setInterval(() => {
                 const minutes = Math.floor(timerValue / 60);
                 const seconds = timerValue % 60;
-                timerElement.textContent = `00:${seconds < 10 ? '0' : ''}${seconds}`;
+                timerElement.textContent = `Thời gian: 0${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
                 timerValue--;
 
                 if (timerValue < 0) {
                     clearInterval(interval);
-                    submitQuiz();  // Auto-submit when time is up
+                    submitQuiz(); // Tự động nộp khi hết thời gian
                 }
             }, 1000);
         }
 
+        // Xử lý nộp bài thi
         function submitQuiz() {
-            var form = document.getElementById('quizForm');
-            var formData = new FormData(form);
-            var correctAnswers = {
-                q1: 'A',
-                q2: 'A',
-                q3: 'A',
-                q4: 'A',
-                q5: 'B',
-                q6: 'A',
-                q7: 'C',
-                q8: 'A',
-                q9: 'A',
-                q10: 'B'
-            };
-            
-            var userAnswers = {};
-            var correctCount = 0;
+            let correctCount = 0;
+            const formData = new FormData(quizForm);
 
             formData.forEach((value, key) => {
-                userAnswers[key] = value;
-                if (correctAnswers[key] === value) {
+                const questionIndex = parseInt(key.slice(1)) - 1;
+                if (selectedQuestions[questionIndex].answer === value) {
                     correctCount++;
                 }
             });
 
+            // Vô hiệu hóa các lựa chọn sau khi nộp bài
+            const inputs = quizForm.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.disabled = true; // Vô hiệu hóa tất cả các lựa chọn
+            });
+
             // Hiển thị thông báo
             message.style.display = 'block';
-            
-            // Delay chuyển hướng để người dùng có thể đọc thông báo
-            setTimeout(() => {
-                window.location.href = 'result.html?correct=' + correctCount;
-            }, 2000);
+            message.textContent = `Cảm ơn bạn đã hoàn thành bài thi! Bạn trả lời đúng ${correctCount}/20 câu.`;
+
+            // Nếu trả lời đúng 8/10 câu thì hiển thị nút nhận chứng chỉ
+            if (correctCount >= 15) {
+                certBtn.style.display = 'block';
+            } else {
+                // Nếu trả lời sai dưới 8 câu, chuyển về home.html sau 3 giây
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 3000);
+            }
+
+            // Lưu kết quả bài thi vào Firestore
+            saveQuizResult(correctCount);
         }
 
-        // Bắt đầu đếm ngược khi trang được tải
-        window.onload = function() {
-            startTimer();
-        };
+        // Chuyển đến trang chứng chỉ
+        function getCertificate() {
+            window.location.href = 'chungchi.html';
+        }
     </script>
 </body>
+
 </html>

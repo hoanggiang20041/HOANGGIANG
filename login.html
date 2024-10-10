@@ -1,14 +1,15 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <title>Đăng Nhập</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
     <style>
         body {
             font-family: 'Roboto Condensed', sans-serif;
-            background-color: #f4f4f4;
+            background: url('images/banner1.jpg') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,111 +17,485 @@
             align-items: center;
             height: 100vh;
         }
+
         .container {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            width: 320px;
             text-align: center;
+            width: 350px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
-        .container h1 {
-            margin-bottom: 25px;
-            font-size: 26px;
-            color: #333;
-        }
-        .container input {
-            width: calc(100% - 20px);
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        .container button {
+
+        input,
+        select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #4CAF50;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 10px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
+            width: 100%;
+            transition: background-color 0.3s;
         }
-        .container button:hover {
+
+        button:hover {
             background-color: #45a049;
         }
-        .message {
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
+        .forgot-password {
             margin-top: 10px;
-            color: #d9534f;
-        }
-        .hidden {
-            display: none;
-        }
-        .toggle-link {
-            margin-top: 15px;
+            font-size: 12px;
+            color: #007BFF;
             cursor: pointer;
-            color: #007bff;
         }
-        .toggle-link:hover {
+
+        .forgot-password:hover {
             text-decoration: underline;
         }
+
+        #resetPasswordContainer {
+            display: none;
+        }
+
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .google-button,
+        .otp-button,
+        .face-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            border: none;
+            padding: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            margin: 0 5px;
+        }
+
+        .google-button img,
+        .otp-button img,
+        .face-button img {
+            width: 20px;
+        }
+
+        .or-text {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .phone-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        #phoneCode {
+            width: 80px;
+            margin-right: 10px;
+        }
+
+        #phoneNumber {
+            flex-grow: 1;
+            padding: 5px;
+            width: 100%;
+        }
     </style>
-</head>
-<body>
-    <div class="container">
-        <h1 id="form-title">Đăng Nhập</h1>
-        <input type="text" id="username" placeholder="Tên người dùng" />
-        <input type="password" id="password" placeholder="Mật khẩu" />
-        <button id="action-button">Đăng Nhập</button>
-        <div id="message" class="message hidden">Tên người dùng hoặc mật khẩu không đúng.</div>
-        <div id="toggle-link" class="toggle-link" onclick="toggleForm()">Chưa có tài khoản? Đăng ký</div>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
 
-    <script>
-        document.getElementById('action-button').addEventListener('click', function() {
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-            var formTitle = document.getElementById('form-title').textContent;
+        const firebaseConfig = {
+            apiKey: "AIzaSyCer_BVSGUIICAocIOwiqGwtHSbmUTy-TI",
+            authDomain: "luutru-2fc0c.firebaseapp.com",
+            projectId: "luutru-2fc0c",
+            storageBucket: "luutru-2fc0c.appspot.com",
+            messagingSenderId: "447316566416",
+            appId: "1:447316566416:web:8ea9562ef016528232d315",
+            measurementId: "G-QLE52FWS60"
+        };
 
-            if (formTitle === 'Đăng Nhập') {
-                // Đăng nhập
-                var storedUsername = localStorage.getItem('username');
-                var storedPassword = localStorage.getItem('password');
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
 
-                if (username === storedUsername && password === storedPassword) {
-                    window.location.href = 'home.html';
-                } else {
-                    document.getElementById('message').classList.remove('hidden');
-                }
-            } else {
-                // Đăng ký
-                localStorage.setItem('username', username);
-                localStorage.setItem('password', password);
-                document.getElementById('message').textContent = 'Đăng ký thành công!';
-                document.getElementById('message').classList.remove('hidden');
-                setTimeout(function() {
-                    window.location.href = 'home.html'; // Chuyển đến trang chính sau khi đăng ký
-                }, 1000); // Thời gian chờ 1 giây để người dùng thấy thông báo đăng ký thành công
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('signInForm').addEventListener('submit', signIn);
+            document.getElementById('registerForm').addEventListener('submit', register);
+            document.getElementById('showRegister').addEventListener('click', showRegisterForm);
+            document.getElementById('showLogin').addEventListener('click', showLoginForm);
+            document.getElementById('forgotPassword').addEventListener('click', showResetPasswordForm);
+            document.getElementById('sendResetCode').addEventListener('click', sendResetCode);
+            document.getElementById('googleSignIn').addEventListener('click', googleSignIn);
+            document.getElementById('googleRegister').addEventListener('click', googleRegister);
+            document.getElementById('otpSignIn').addEventListener('click', function () {
+                window.location.href = 'otp.html';
+            });
+            document.getElementById('faceSignIn').addEventListener('click', function () {
+                window.location.href = 'faceid.html';
+            });
+
+            document.getElementById('faceRegister').addEventListener('click', function () {
+                window.location.href = 'dkface.html';
+            });
         });
 
-        function toggleForm() {
-            var formTitle = document.getElementById('form-title');
-            var actionButton = document.getElementById('action-button');
-            var toggleLink = document.getElementById('toggle-link');
+        function formatTimestamp(isoString) {
+            const date = new Date(isoString);
+            const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+            const timeString = date.toLocaleString('en-US', options);
+            const dateString = date.toLocaleDateString('vi-VN');
+            return `${timeString} ngày ${dateString}`;
+        }
 
-            if (formTitle.textContent === 'Đăng Nhập') {
-                formTitle.textContent = 'Đăng Ký';
-                actionButton.textContent = 'Đăng Ký';
-                toggleLink.textContent = 'Đã có tài khoản? Đăng nhập';
-            } else {
-                formTitle.textContent = 'Đăng Nhập';
-                actionButton.textContent = 'Đăng Nhập';
-                toggleLink.textContent = 'Chưa có tài khoản? Đăng ký';
-                document.getElementById('message').classList.add('hidden');
+        async function signIn(e) {
+            e.preventDefault();
+            document.querySelectorAll('.error').forEach(err => err.textContent = '');
+
+            const usernameOrEmail = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!usernameOrEmail) {
+                document.getElementById('loginEmailError').textContent = 'Vui lòng nhập tên người dùng hoặc email.';
+                return;
+            }
+
+            if (!password) {
+                document.getElementById('loginPasswordError').textContent = 'Vui lòng nhập mật khẩu.';
+                return;
+            }
+
+            try {
+                let email = usernameOrEmail;
+
+                const userQuery = query(collection(db, "users"), where("username", "==", usernameOrEmail));
+                const userDoc = await getDocs(userQuery);
+                if (!userDoc.empty) {
+                    email = userDoc.docs[0].data().email;
+                }
+
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const userId = userCredential.user.uid;
+                const userName = userDoc.empty ? email : userDoc.docs[0].data().fullName;
+                const loginTimestamp = new Date();
+
+                const loginHistoryRef = collection(db, "loginHistory");
+                await setDoc(doc(loginHistoryRef, `${userId}_${Date.now()}`), {
+                    userId: userId,
+                    username: userName,
+                    timestamp: loginTimestamp.toISOString(),
+                    formattedTime: formatTimestamp(loginTimestamp.toISOString())
+                });
+
+                window.location.href = (email === "admin@gmail.com" && password === "123456") ? './admin.html' : './home.html';
+            } catch (error) {
+                alert('Sai tài khoản hoặc mật khẩu');
+            }
+        }
+
+        async function register(e) {
+            e.preventDefault();
+            document.querySelectorAll('.error').forEach(err => err.textContent = '');
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const province = document.getElementById('province').value;
+            const phoneCode = document.getElementById('phoneCode').value;
+
+            let formattedPhoneNumber = phoneNumber.startsWith('0') ? phoneNumber.slice(1) : phoneNumber;
+            const phoneRegex = /^\d{9}$/;
+            const fullPhoneNumber = phoneCode + formattedPhoneNumber;
+
+            if (!fullName) {
+                document.getElementById('fullNameError').textContent = 'Vui lòng nhập tên đầy đủ.';
+                return;
+            }
+
+            if (!username) {
+                document.getElementById('usernameError').textContent = 'Vui lòng nhập tên người dùng.';
+                return;
+            }
+
+            if (!email) {
+                document.getElementById('registerEmailError').textContent = 'Vui lòng nhập email.';
+                return;
+            }
+
+            if (!password) {
+                document.getElementById('registerPasswordError').textContent = 'Vui lòng nhập mật khẩu.';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Mật khẩu xác nhận không khớp.';
+                return;
+            }
+
+            if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password)) {
+                document.getElementById('registerPasswordError').textContent = 'Mật khẩu phải có chữ hoa và chữ thường.';
+                return;
+            }
+
+            if (!phoneRegex.test(formattedPhoneNumber)) {
+                document.getElementById('phoneNumberError').textContent = 'Số điện thoại không hợp lệ. Vui lòng nhập 9 chữ số.';
+                return;
+            }
+
+            if (!phoneCode) {
+                document.getElementById('phoneNumberError').textContent = 'Vui lòng chọn mã vùng.';
+                return;
+            }
+
+            try {
+                const emailQuery = query(collection(db, "users"), where("email", "==", email));
+                const emailDocs = await getDocs(emailQuery);
+                if (!emailDocs.empty) {
+                    document.getElementById('registerEmailError').textContent = 'Email này đã được sử dụng.';
+                    return;
+                }
+
+                const usernameQuery = query(collection(db, "users"), where("username", "==", username));
+                const usernameDocs = await getDocs(usernameQuery);
+                if (!usernameDocs.empty) {
+                    document.getElementById('usernameError').textContent = 'Tên người dùng đã được sử dụng.';
+                    return;
+                }
+
+                const phoneQuery = query(collection(db, "users"), where("tel", "==", fullPhoneNumber));
+                const phoneDocs = await getDocs(phoneQuery);
+                if (!phoneDocs.empty) {
+                    document.getElementById('phoneNumberError').textContent = 'Số điện thoại đã được sử dụng.';
+                    return;
+                }
+
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                await setDoc(doc(db, "users", user.uid), {
+                    fullName: fullName,
+                    username: username,
+                    email: email,
+                    tel: fullPhoneNumber,
+                    province: province,
+                    isVerified: false,
+                    createdAt: new Date()
+                });
+
+                alert('Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.');
+                document.getElementById('registerForm').reset();
+                showLoginForm();
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    document.getElementById('registerEmailError').textContent = 'Email này đã được sử dụng.';
+                } else {
+                    alert('Đã xảy ra lỗi: ' + error.message);
+                }
+            }
+        }
+
+        async function googleRegister() {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+
+                await setDoc(doc(db, "users", user.uid), {
+                    fullName: user.displayName,
+                    email: user.email,
+                    province: '',
+                    isVerified: true,
+                    createdAt: new Date()
+                });
+
+                alert('Đăng ký bằng Google thành công!');
+                window.location.href = './home.html';
+            } catch (error) {
+                alert('Đã xảy ra lỗi khi đăng ký bằng Google: ' + error.message);
+            }
+        }
+
+
+        function showRegisterForm() {
+            document.getElementById('signInForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('resetPasswordContainer').style.display = 'none';
+        }
+
+        function showLoginForm() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('resetPasswordContainer').style.display = 'none';
+            document.getElementById('signInForm').style.display = 'block';
+        }
+
+        function showResetPasswordForm() {
+            document.getElementById('signInForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('resetPasswordContainer').style.display = 'block';
+        }
+
+        async function sendResetCode() {
+            const email = document.getElementById('resetEmail').value.trim();
+            if (!email) {
+                alert('Vui lòng nhập email.');
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert('Đường dẫn đặt lại mật khẩu đã được gửi đến email của bạn.');
+                location.reload();
+            } catch (error) {
+                alert('Đã xảy ra lỗi: ' + error.message);
+            }
+        }
+
+        async function googleSignIn() {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+
+                const loginHistoryRef = collection(db, "loginHistory");
+                const loginTimestamp = new Date();
+
+                await setDoc(doc(loginHistoryRef, `${user.uid}_${Date.now()}`), {
+                    userId: user.uid,
+                    username: user.displayName || user.email,
+                    timestamp: loginTimestamp.toISOString(),
+                    formattedTime: formatTimestamp(loginTimestamp.toISOString()),
+                    method: 'Google'
+                });
+
+                window.location.href = './home.html';
+            } catch (error) {
+                alert('Đã xảy ra lỗi khi đăng nhập bằng Google: ' + error.message);
             }
         }
     </script>
+</head>
+
+<body>
+    <div class="container">
+        <form id="signInForm">
+            <h2>Đăng Nhập</h2>
+            <input type="text" id="loginEmail" placeholder="Tên người dùng hoặc Email" required>
+            <span class="error" id="loginEmailError"></span>
+            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+            <span class="error" id="loginPasswordError"></span>
+            <button type="submit">Đăng Nhập</button>
+            <div class="forgot-password" id="forgotPassword">Quên mật khẩu?</div>
+            <div class="or-text">or</div>
+            <div class="auth-buttons">
+                <button type="button" id="googleSignIn" class="google-button">
+                    <img src="images/google-icon.png" alt="Google Logo">
+                </button>
+                <button type="button" id="otpSignIn" class="otp-button">
+                    <img src="images/gmail.png" alt="Tel Logo">
+                </button>
+            </div>
+            <div>Chưa có tài khoản? <span id="showRegister" style="color: blue; cursor: pointer;">Đăng Ký</span></div>
+        </form>
+
+        <form id="registerForm" style="display: none;">
+            <h2>Đăng Ký</h2>
+            <input type="text" id="fullName" placeholder="Họ và tên" required>
+            <span class="error" id="fullNameError"></span>
+            <input type="text" id="username" placeholder="Tên người dùng" required>
+            <span class="error" id="usernameError"></span>
+            <input type="email" id="registerEmail" placeholder="Email" required>
+            <span class="error" id="registerEmailError"></span>
+            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+            <span class="error" id="registerPasswordError"></span>
+            <input type="password" id="confirmPassword" placeholder="Xác nhận mật khẩu" required>
+            <span class="error" id="confirmPasswordError"></span>
+            <div class="phone-container">
+                <select id="phoneCode" name="phoneCode" required>
+                    <option value="+84">+84 (Vietnam)</option>
+                    <option value="+1">+1 (USA)</option>
+                    <option value="+44">+44 (United Kingdom)</option>
+                    <option value="+61">+61 (Australia)</option>
+                    <option value="+49">+49 (Germany)</option>
+                    <option value="+33">+33 (France)</option>
+                    <option value="+39">+39 (Italy)</option>
+                    <option value="+34">+34 (Spain)</option>
+                    <option value="+7">+7 (Russia)</option>
+                    <option value="+81">+81 (Japan)</option>
+                    <option value="+65">+65 (Singapore)</option>
+                    <option value="+60">+60 (Malaysia)</option>
+                    <option value="+86">+86 (China)</option>
+                    <option value="+91">+91 (India)</option>
+                    <option value="+62">+62 (Indonesia)</option>
+                    <option value="+82">+82 (South Korea)</option>
+                    <option value="+90">+90 (Turkey)</option>
+                    <option value="+55">+55 (Brazil)</option>
+                    <option value="+27">+27 (South Africa)</option>
+                </select>
+                <input type="tel" id="phoneNumber" placeholder="Số điện thoại" required>
+            </div>
+            <span class="error" id="phoneNumberError"></span>
+            <select id="province" name="province" required>
+                <option value="">Chọn tỉnh</option>
+                <option value="Hanoi">Hà Nội</option>
+                <option value="HCMC">TP. Hồ Chí Minh</option>
+                <option value="Danang">Đà Nẵng</option>
+                <option value="Haiphong">Hải Phòng</option>
+                <option value="Cantho">Cần Thơ</option>
+            </select>
+            <button type="submit">Đăng Ký</button>
+            <div class="or-text">or</div>
+            <div class="auth-buttons">
+                <button type="button" id="googleRegister" class="google-button">
+                    <img src="images/google-icon.png" alt="Google Logo">
+                </button>
+            </div>
+            <div>Đã có tài khoản? <span id="showLogin" style="color: blue; cursor: pointer;">Đăng Nhập</span></div>
+        </form>
+
+        <div id="resetPasswordContainer" style="display: none;">
+            <h2>Đặt Lại Mật Khẩu</h2>
+            <input type="email" id="resetEmail" placeholder="Email" required>
+            <button type="button" id="sendResetCode">Gửi mã đặt lại</button>
+        </div>
+    </div>
 </body>
+
 </html>
